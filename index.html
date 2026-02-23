@@ -7,124 +7,10 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
-
-    body {
-      background: #000;
-      color: #fff;
-      overflow-x: hidden;
-      padding-top: 90px;
-    }
-
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 20px 10%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(8px);
-      z-index: 1000;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin-left: 20px;
-      font-weight: 500;
-    }
-
-    nav a:hover {
-      opacity: 0.7;
-    }
-
-    section {
-      padding: 120px 10%;
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.8s ease;
-    }
-
-    section.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .hero {
-      height: 90vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      opacity: 1;
-      transform: none;
-    }
-
-    h1 {
-      font-size: 64px;
-      font-weight: 800;
-      margin-bottom: 20px;
-    }
-
-    h2 {
-      font-size: 40px;
-      margin-bottom: 40px;
-    }
-
-    p {
-      opacity: 0.7;
-      max-width: 600px;
-      font-size: 18px;
-    }
-
-    .btn {
-      margin-top: 40px;
-      padding: 14px 30px;
-      border: 1px solid #fff;
-      color: #fff;
-      text-decoration: none;
-      display: inline-block;
-      transition: 0.3s ease;
-    }
-
-    .btn:hover {
-      background: #fff;
-      color: #000;
-    }
-
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 40px;
-    }
-
-    .card {
-      border: 1px solid #222;
-      padding: 40px;
-      transition: 0.3s ease;
-    }
-
-    .card:hover {
-      border-color: #fff;
-      transform: translateY(-6px);
-    }
-
-    footer {
-      padding: 60px 10%;
-      border-top: 1px solid #111;
-      opacity: 0.4;
-      font-size: 14px;
-    }
-  </style>
+ 
 </head>
+
+<link rel="stylesheet" href="style.css">
 
 <body>
 
@@ -152,9 +38,19 @@
     </div>
   </section>
 
+  <section id="portfolio">
+  <h2>Our Work</h2>
+  <div class="portfolio-grid">
+    <img src="https://picsum.photos/400/500?1" alt="Client work 1">
+    <img src="https://picsum.photos/400/500?2" alt="Client work 2">
+    <img src="https://picsum.photos/400/500?3" alt="Client work 3">
+    <img src="https://picsum.photos/400/500?4" alt="Client work 4">
+  </div>
+</section>
+
   <section id="contact">
     <h2>Contact</h2>
-    <p>Email: hello@profylift.in</p>
+    <p>Email: profylift@gmail.com</p>
   </section>
 
   <footer>
