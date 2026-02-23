@@ -17,26 +17,37 @@
       background: #000;
       color: #fff;
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
     section {
-      padding: 100px 10%;
+      padding: 120px 10%;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     h1 {
-      font-size: 64px;
+      font-size: 72px;
       font-weight: 800;
       letter-spacing: -2px;
+      margin-bottom: 20px;
     }
 
     h2 {
-      font-size: 36px;
-      margin-bottom: 30px;
+      font-size: 42px;
+      margin-bottom: 40px;
     }
 
     p {
       opacity: 0.7;
       max-width: 600px;
+      font-size: 18px;
     }
 
     .hero {
@@ -44,16 +55,19 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      opacity: 1;
+      transform: none;
     }
 
     .btn {
-      margin-top: 30px;
-      padding: 14px 30px;
+      margin-top: 40px;
+      padding: 14px 32px;
       border: 1px solid #fff;
       text-decoration: none;
       color: #fff;
       display: inline-block;
       transition: 0.3s ease;
+      font-weight: 500;
     }
 
     .btn:hover {
@@ -63,25 +77,27 @@
 
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 40px;
     }
 
     .card {
-      border: 1px solid #333;
-      padding: 40px;
+      border: 1px solid #222;
+      padding: 50px;
       transition: 0.3s ease;
+      font-size: 18px;
     }
 
     .card:hover {
       border-color: #fff;
-      transform: translateY(-5px);
+      transform: translateY(-8px);
     }
 
     footer {
-      padding: 40px 10%;
-      border-top: 1px solid #222;
-      opacity: 0.5;
+      padding: 60px 10%;
+      border-top: 1px solid #111;
+      opacity: 0.4;
+      font-size: 14px;
     }
   </style>
 </head>
@@ -89,7 +105,7 @@
 
   <section class="hero">
     <h1>PROFYLIFT</h1>
-    <p>We build Instagram for businesses that don’t exist online. Content. Growth. Authority.</p>
+    <p>We build Instagram for businesses that don’t exist online. We turn local shops into digital brands.</p>
     <a href="#contact" class="btn">Book Free Audit</a>
   </section>
 
@@ -105,7 +121,7 @@
 
   <section>
     <h2>Why Profylift</h2>
-    <p>Most local businesses don’t exist online. We build them from zero and turn them into brands people trust.</p>
+    <p>Most businesses around you are invisible online. We fix that. From zero followers to consistent growth and authority.</p>
   </section>
 
   <section id="contact">
@@ -116,6 +132,22 @@
   <footer>
     © 2026 Profylift. All rights reserved.
   </footer>
+
+  <script>
+    const sections = document.querySelectorAll("section");
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.2 });
+
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+  </script>
 
 </body>
 </html>
