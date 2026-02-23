@@ -20,7 +20,6 @@ html { scroll-behavior: smooth; }
 body {
   background: #000;
   color: #fff;
-  padding-top: 100px;
 }
 
 /* NAVBAR */
@@ -28,28 +27,80 @@ body {
 nav {
   position: fixed;
   top: 0;
-  left: 0;
   width: 100%;
   padding: 25px 10%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(0,0,0,0.9);
-  backdrop-filter: blur(10px);
+  background: rgba(0,0,0,0.95);
   border-bottom: 1px solid #111;
   z-index: 1000;
 }
 
-nav img { height: 100px; }
+nav img {
+  height: 80px;
+}
 
 nav a {
   color: #aaa;
   text-decoration: none;
   margin-left: 30px;
-  transition: 0.3s ease;
+  transition: 0.3s;
 }
 
-nav a:hover { color: #fff; }
+nav a:hover {
+  color: #fff;
+}
+
+/* HERO */
+
+.hero {
+  height: 100vh;
+  padding: 0 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.highlight {
+  color: #ffcc00;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  opacity: 0.8;
+  max-width: 700px;
+  margin: auto;
+  margin-bottom: 30px;
+}
+
+.btn {
+  padding: 14px 30px;
+  border: 1px solid #fff;
+  color: #fff;
+  text-decoration: none;
+  display: inline-block;
+  margin: 10px;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #fff;
+  color: #000;
+}
+
+.primary-btn {
+  background: #ffcc00;
+  color: #000;
+  border: none;
+}
 
 /* SECTIONS */
 
@@ -58,46 +109,17 @@ section {
   border-bottom: 1px solid #111;
 }
 
-.hero {
-  height: 85vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-h1 {
-  font-size: 64px;
-  font-weight: 800;
-  margin-bottom: 20px;
-}
-
 h2 {
-  font-size: 40px;
+  font-size: 2.5rem;
   margin-bottom: 40px;
-}
-
-/* BUTTON */
-
-.btn {
-  padding: 14px 32px;
-  border: 1px solid #fff;
-  color: #fff;
-  text-decoration: none;
-  display: inline-block;
-  transition: 0.3s ease;
-  margin-top: 20px;
-}
-
-.btn:hover {
-  background: #fff;
-  color: #000;
+  text-align: center;
 }
 
 /* SERVICES */
 
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 40px;
 }
 
@@ -105,19 +127,18 @@ h2 {
   border: 1px solid #222;
   padding: 50px;
   text-align: center;
-  transition: 0.3s ease;
+  transition: 0.3s;
 }
 
 .card:hover {
-  border-color: #fff;
-  transform: translateY(-6px);
+  border-color: #ffcc00;
+  transform: translateY(-5px);
 }
 
 .card a {
   color: #fff;
   text-decoration: none;
-  font-size: 18px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* PORTFOLIO */
@@ -131,7 +152,7 @@ h2 {
 .portfolio-grid img {
   width: 100%;
   filter: grayscale(100%);
-  transition: 0.4s ease;
+  transition: 0.3s;
 }
 
 .portfolio-grid img:hover {
@@ -139,13 +160,27 @@ h2 {
   transform: scale(1.03);
 }
 
-/* CONTACT */
+/* TESTIMONIALS */
 
-#contact { text-align: center; }
+.testimonial {
+  max-width: 700px;
+  margin: auto;
+  text-align: center;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.testimonial strong {
+  display: block;
+  margin-top: 20px;
+  font-style: normal;
+}
+
+/* CONTACT */
 
 .contact-form {
   max-width: 500px;
-  margin: 50px auto;
+  margin: 40px auto;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -157,7 +192,6 @@ h2 {
   border: 1px solid #333;
   color: #fff;
   padding: 15px;
-  font-size: 16px;
   border-radius: 6px;
 }
 
@@ -169,22 +203,20 @@ h2 {
 .contact-form input:focus,
 .contact-form textarea:focus {
   outline: none;
-  border-color: #fff;
+  border-color: #ffcc00;
 }
 
 .contact-buttons {
-  margin-top: 40px;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+  text-align: center;
+  margin-top: 30px;
 }
 
 /* FOOTER */
 
 footer {
-  padding: 60px 10%;
-  opacity: 0.4;
   text-align: center;
+  padding: 50px;
+  opacity: 0.4;
 }
 </style>
 </head>
@@ -201,31 +233,19 @@ footer {
 </nav>
 
 <section class="hero">
-  <h1>We Build Instagram Brands.</h1>
-  <p>From zero presence to real authority. We help offline businesses dominate online.</p>
-  <a href="#contact" class="btn">Book Free Audit</a>
+  <h1>Grow Your Business With <span class="highlight">Instagram</span></h1>
+  <p>We help local businesses transform from offline to powerful digital brands with content, reels, and strategy.</p>
+  <a href="#contact" class="btn primary-btn">Book Free Audit</a>
+  <a href="#portfolio" class="btn">See Our Work</a>
 </section>
 
 <section id="services">
-  <h2>Services</h2>
+  <h2>Our Services</h2>
   <div class="services-grid">
-
-    <div class="card">
-      <a href="https://instagram.com/YOURCLIENT1" target="_blank">Instagram Setup</a>
-    </div>
-
-    <div class="card">
-      <a href="https://instagram.com/YOURCLIENT2" target="_blank">Reels Editing</a>
-    </div>
-
-    <div class="card">
-      <a href="https://instagram.com/YOURCLIENT3" target="_blank">Content Creation</a>
-    </div>
-
-    <div class="card">
-      <a href="https://instagram.com/YOURCLIENT4" target="_blank">Monthly Management</a>
-    </div>
-
+    <div class="card"><a href="https://instagram.com/YOURCLIENT1" target="_blank">Instagram Setup</a></div>
+    <div class="card"><a href="https://instagram.com/YOURCLIENT2" target="_blank">Reels Editing</a></div>
+    <div class="card"><a href="https://instagram.com/YOURCLIENT3" target="_blank">Content Creation</a></div>
+    <div class="card"><a href="https://instagram.com/YOURCLIENT4" target="_blank">Monthly Management</a></div>
   </div>
 </section>
 
@@ -239,6 +259,14 @@ footer {
   </div>
 </section>
 
+<section>
+  <h2>What Clients Say</h2>
+  <div class="testimonial">
+    “Profylift completely transformed our Instagram presence. Our sales increased within months.”
+    <strong>— Royal Textiles</strong>
+  </div>
+</section>
+
 <section id="contact">
   <h2>Let’s Work Together</h2>
 
@@ -247,12 +275,12 @@ footer {
     <input type="email" name="email" placeholder="Your Email" required>
     <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
     <input type="hidden" name="_captcha" value="false">
-    <button type="submit" class="btn">Send Message</button>
+    <button type="submit" class="btn primary-btn">Send Message</button>
   </form>
 
   <div class="contact-buttons">
-    <a href="https://wa.me/916382287857" target="_blank" class="btn">WhatsApp Us</a>
-    <a href="https://instagram.com/profylift" target="_blank" class="btn">Visit Instagram</a>
+    <a href="https://wa.me/919999999999" target="_blank" class="btn">WhatsApp Us</a>
+    <a href="https://instagram.com/YOURAGENCY" target="_blank" class="btn">Visit Instagram</a>
   </div>
 </section>
 
