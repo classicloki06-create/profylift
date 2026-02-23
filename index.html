@@ -16,7 +16,6 @@
     body {
       background: #000;
       color: #fff;
-      line-height: 1.6;
       overflow-x: hidden;
     }
 
@@ -35,7 +34,6 @@
     h1 {
       font-size: 72px;
       font-weight: 800;
-      letter-spacing: -2px;
       margin-bottom: 20px;
     }
 
@@ -75,7 +73,7 @@
       color: #000;
     }
 
-    .services-grid {
+    .services-grid, .portfolio-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 40px;
@@ -85,12 +83,57 @@
       border: 1px solid #222;
       padding: 50px;
       transition: 0.3s ease;
-      font-size: 18px;
     }
 
     .card:hover {
       border-color: #fff;
       transform: translateY(-8px);
+    }
+
+    .portfolio-grid img {
+      width: 100%;
+      filter: grayscale(100%);
+      transition: 0.3s ease;
+    }
+
+    .portfolio-grid img:hover {
+      filter: grayscale(0%);
+    }
+
+    .testimonial-box {
+      border: 1px solid #222;
+      padding: 40px;
+      max-width: 600px;
+      margin: auto;
+      text-align: center;
+    }
+
+    form {
+      max-width: 500px;
+      margin-top: 40px;
+    }
+
+    input, textarea {
+      width: 100%;
+      background: #111;
+      border: 1px solid #333;
+      color: #fff;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 12px 25px;
+      border: 1px solid #fff;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background: #fff;
+      color: #000;
     }
 
     footer {
@@ -105,7 +148,7 @@
 
   <section class="hero">
     <h1>PROFYLIFT</h1>
-    <p>We build Instagram for businesses that don’t exist online. We turn local shops into digital brands.</p>
+    <p>We build Instagram for businesses that don’t exist online. From zero to digital authority.</p>
     <a href="#contact" class="btn">Book Free Audit</a>
   </section>
 
@@ -120,13 +163,36 @@
   </section>
 
   <section>
-    <h2>Why Profylift</h2>
-    <p>Most businesses around you are invisible online. We fix that. From zero followers to consistent growth and authority.</p>
+    <h2>Portfolio</h2>
+    <div class="portfolio-grid">
+      <img src="https://picsum.photos/400/500?1">
+      <img src="https://picsum.photos/400/500?2">
+      <img src="https://picsum.photos/400/500?3">
+      <img src="https://picsum.photos/400/500?4">
+    </div>
+  </section>
+
+  <section>
+    <h2>What Clients Say</h2>
+    <div class="testimonial-box">
+      <p id="testimonial-text">“Profylift grew our Instagram from 0 to 3,000 followers in 3 months.”</p>
+      <br>
+      <strong id="testimonial-author">— Royal Textiles</strong>
+    </div>
   </section>
 
   <section id="contact">
     <h2>Contact</h2>
-    <p>Email: hello@profylift.in</p>
+
+    <form action="https://formsubmit.co/profylift@gmail.com" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+
+      <input type="hidden" name="_captcha" value="false">
+      <button type="submit">Send Message</button>
+    </form>
+
   </section>
 
   <footer>
@@ -144,9 +210,30 @@
       });
     }, { threshold: 0.2 });
 
-    sections.forEach(section => {
-      observer.observe(section);
-    });
+    sections.forEach(section => observer.observe(section));
+
+    const testimonials = [
+      {
+        text: "Profylift grew our Instagram from 0 to 3,000 followers in 3 months.",
+        author: "Royal Textiles"
+      },
+      {
+        text: "We finally look like a real brand online.",
+        author: "Chennai Furnishings"
+      },
+      {
+        text: "Best decision for our business visibility.",
+        author: "Urban Clothing"
+      }
+    ];
+
+    let index = 0;
+
+    setInterval(() => {
+      index = (index + 1) % testimonials.length;
+      document.getElementById("testimonial-text").innerText = testimonials[index].text;
+      document.getElementById("testimonial-author").innerText = "— " + testimonials[index].author;
+    }, 4000);
   </script>
 
 </body>
