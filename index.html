@@ -2,36 +2,110 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profylift</title>
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: #000;
+      color: #fff;
+      line-height: 1.6;
+    }
+
+    section {
+      padding: 100px 10%;
+    }
+
+    h1 {
+      font-size: 64px;
+      font-weight: 800;
+      letter-spacing: -2px;
+    }
+
+    h2 {
+      font-size: 36px;
+      margin-bottom: 30px;
+    }
+
+    p {
+      opacity: 0.7;
+      max-width: 600px;
+    }
+
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .btn {
+      margin-top: 30px;
+      padding: 14px 30px;
+      border: 1px solid #fff;
+      text-decoration: none;
+      color: #fff;
+      display: inline-block;
+      transition: 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #fff;
+      color: #000;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      border: 1px solid #333;
+      padding: 40px;
+      transition: 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: #fff;
+      transform: translateY(-5px);
+    }
+
+    footer {
+      padding: 40px 10%;
+      border-top: 1px solid #222;
+      opacity: 0.5;
+    }
+  </style>
 </head>
 <body>
 
-  <header>
+  <section class="hero">
     <h1>PROFYLIFT</h1>
-    <p>We Build Instagram For Businesses That Don’t Exist Online.</p>
+    <p>We build Instagram for businesses that don’t exist online. Content. Growth. Authority.</p>
     <a href="#contact" class="btn">Book Free Audit</a>
-  </header>
+  </section>
 
-  <section class="services">
+  <section>
     <h2>Services</h2>
-    <div class="card">Instagram Setup</div>
-    <div class="card">Content Creation</div>
-    <div class="card">Reels Editing</div>
-    <div class="card">Monthly Management</div>
+    <div class="services-grid">
+      <div class="card">Instagram Setup</div>
+      <div class="card">Content Creation</div>
+      <div class="card">Reels Editing</div>
+      <div class="card">Monthly Management</div>
+    </div>
   </section>
 
-  <section class="portfolio">
-    <h2>Our Work</h2>
-    <p>Before & After transformations for local brands.</p>
-  </section>
-
-  <section class="testimonials">
-    <h2>Testimonials</h2>
-    <blockquote>
-      “Profylift grew our Instagram from 0 to 3,000 followers in 3 months.”
-      <br><strong>- Royal Textiles</strong>
-    </blockquote>
+  <section>
+    <h2>Why Profylift</h2>
+    <p>Most local businesses don’t exist online. We build them from zero and turn them into brands people trust.</p>
   </section>
 
   <section id="contact">
@@ -40,7 +114,7 @@
   </section>
 
   <footer>
-    <p>© 2026 Profylift. All rights reserved.</p>
+    © 2026 Profylift. All rights reserved.
   </footer>
 
 </body>
