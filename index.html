@@ -1105,13 +1105,12 @@
       filter: drop-shadow(0 10px 22px rgba(216,177,91,.12));
     }
 
-    /* ── FADE-IN (kept for fallback; GSAP overrides) ── */
+    /* ── FADE-IN base — GSAP owns all animation, CSS just sets initial invisible state ── */
     .fade-in{
       opacity: 0;
-      transform: translateY(14px);
-      transition: opacity .8s ease, transform .8s ease;
+      /* no CSS transition — GSAP handles everything */
     }
-    .fade-in.in{ opacity: 1; transform: translateY(0); }
+    .fade-in.in{ opacity: 1; }
 
     .skip-link{
       position:absolute;
@@ -1765,7 +1764,7 @@
           <div class="contact-panel fade-in" aria-label="Contact form">
             <h3 style="margin:0;font-size:18px;letter-spacing:-.01em;">Send a message</h3>
             <p style="margin:10px 0 0;color:rgba(255,255,255,.72);line-height:1.8;font-size:14px;">
-              Use the form below. It will open your email client addressed to <span style="color:rgba(241,208,138,.95);font-weight:700;"><a href="/cdn-cgi/l/profylift@gmail.com" class="__cf_email__" data-cfemail="ff8f8d9099869396998bbf98929e9693d19c9092">[email&#160;protected]</a></span>.
+              Use the form below. It will open your email client addressed to <span style="color:rgba(241,208,138,.95);font-weight:700;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ff8f8d9099869396998bbf98929e9693d19c9092">[email&#160;protected]</a></span>.
             </p>
 
             <form id="contactForm" action="mailto:profylift@gmail.com" method="post" enctype="text/plain">
@@ -2172,62 +2171,243 @@
     function fireHeroEntrance() {
       const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
       heroTl
-        .from('#heroKicker', { opacity: 0, y: 30, duration: 0.9 }, 0.1)
-        .from('#heroH1',      { opacity: 0, y: 36, duration: 1.0 }, 0.35)
-        .from('#heroSub',     { opacity: 0, y: 28, duration: 0.85 }, 0.55)
-        .from('#heroActions', { opacity: 0, y: 22, duration: 0.75 }, 0.72)
-        .from('#heroTrust',   { opacity: 0, y: 18, duration: 0.70 }, 0.88)
-        .from('#heroCard',    { opacity: 0, y: 40, duration: 1.0, ease: 'power2.out' }, 0.50);
+        // Kicker badge: from left with slight tilt
+        .from('#heroKicker',  { opacity: 0, x: -50, rotation: -3, scale: 0.92, duration: 0.9 }, 0.1)
+        // Main headline: up from below, bold rotation
+        .from('#heroH1',      { opacity: 0, y: 55, rotation: -2, scale: 0.93, duration: 1.1 }, 0.3)
+        // Subhead: up, lighter rotation
+        .from('#heroSub',     { opacity: 0, y: 38, rotation: -1, scale: 0.96, duration: 0.95 }, 0.52)
+        // Action buttons: from left, snappy
+        .from('#heroActions', { opacity: 0, x: -40, rotation: -2, scale: 0.95, duration: 0.85 }, 0.70)
+        // Trust pills: cascade up with stagger
+        .from('#heroTrust .pill', { opacity: 0, y: 28, scale: 0.90, rotation: 2, duration: 0.75, stagger: 0.10 }, 0.88)
+        // Hero card: from right, with rotation — feels like it slides onto screen
+        .from('#heroCard', { opacity: 0, x: 80, y: 20, rotation: 4, scale: 0.92, duration: 1.15, ease: 'power2.out' }, 0.42);
     }
 
     if (reducedMotion) return;
 
-    /* ══ SCROLL ANIMATIONS ══ */
-    document.querySelectorAll('.fade-in').forEach(el => {
-      if (['heroLeft','heroCard'].includes(el.id)) return;
-      gsap.fromTo(el,
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' } }
-      );
-    });
+    /* ══════════════════════════════════════════════════════════════
+       PREMIUM DIRECTIONAL SCROLL ANIMATIONS
+       Each element flows in from a purposeful direction with
+       rotation + scale for genuine 3D depth feel.
+    ══════════════════════════════════════════════════════════════ */
 
-    gsap.fromTo('.big-card',
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 0.85, ease: 'power3.out', stagger: 0.12,
-        scrollTrigger: { trigger: '#bigCardGrid', start: 'top 85%', toggleActions: 'play none none none' } }
+    // Shorthand: create a scroll-triggered fromTo with direction presets
+    function revealFrom(targets, fromVars, extraTo, triggerEl, startPos, stagger) {
+      const toVars = Object.assign(
+        { opacity: 1, x: 0, y: 0, rotation: 0, scale: 1,
+          duration: 1.0, ease: 'power3.out',
+          scrollTrigger: {
+            trigger: triggerEl || (typeof targets === 'string' ? document.querySelector(targets) : targets),
+            start: startPos || 'top 87%',
+            toggleActions: 'play none none none'
+          }
+        },
+        extraTo || {}
+      );
+      if (stagger) toVars.stagger = stagger;
+      gsap.fromTo(targets, Object.assign({ opacity: 0 }, fromVars), toVars);
+    }
+
+    /* ── ABOUT SECTION ───────────────────────────────────────── */
+    // Section heading: slides up from below with slight rotation
+    revealFrom('#about .section-head h2',
+      { y: 60, rotation: -2, scale: 0.95 },
+      { duration: 1.0 },
+      '#about .section-head'
+    );
+    revealFrom('#about .section-head p',
+      { y: 40, rotation: -1, scale: 0.97 },
+      { duration: 0.9, delay: 0.12 },
+      '#about .section-head'
+    );
+    // About card text: slides up, mild skew for richness
+    revealFrom('#about .about-card p',
+      { y: 50, rotation: 1, scale: 0.96 },
+      { duration: 1.1 },
+      '#about .about-card',
+      'top 85%'
     );
 
-    document.querySelectorAll('.section-head').forEach(head => {
-      gsap.fromTo(head.querySelectorAll('h2, p'),
-        { opacity: 0, y: 24 },
-        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.15,
-          scrollTrigger: { trigger: head, start: 'top 88%', toggleActions: 'play none none none' } }
+    /* ── CLIENTS / EXPLORE SECTION ───────────────────────────── */
+    // Section heading: up from center
+    revealFrom('#clients .section-head h2',
+      { y: 60, scale: 0.94, rotation: -2 },
+      { duration: 1.0 },
+      '#clients .section-head'
+    );
+    revealFrom('#clients .section-head p',
+      { y: 35, scale: 0.97, rotation: -1 },
+      { duration: 0.85, delay: 0.1 },
+      '#clients .section-head'
+    );
+
+    // Big cards — alternating left/right with rotation
+    // Card 1 (top-left)  → from left
+    // Card 2 (top-right) → from right
+    // Card 3 (bot-left)  → from left
+    // Card 4 (bot-right) → from right
+    const bigCards = document.querySelectorAll('.big-card');
+    bigCards.forEach((card, i) => {
+      const isRight = i % 2 === 1;
+      const xDir    = isRight ? 80 : -80;
+      const rotDir  = isRight ? 3 : -3;
+      gsap.fromTo(card,
+        { opacity: 0, x: xDir, y: 30, rotation: rotDir, scale: 0.95 },
+        {
+          opacity: 1, x: 0, y: 0, rotation: 0, scale: 1,
+          duration: 1.05, ease: 'power3.out',
+          delay: (i % 2 === 0) ? 0 : 0.12, // slight stagger per row pair
+          scrollTrigger: {
+            trigger: '#bigCardGrid',
+            start: 'top 86%',
+            toggleActions: 'play none none none'
+          }
+        }
       );
     });
 
+    /* ── SERVICES / CONTACT SECTION ─────────────────────────── */
+    revealFrom('#services .section-head h2',
+      { y: 60, scale: 0.94, rotation: -2 },
+      { duration: 1.0 },
+      '#services .section-head'
+    );
+    revealFrom('#services .section-head p',
+      { y: 35, scale: 0.97, rotation: -1 },
+      { duration: 0.85, delay: 0.1 },
+      '#services .section-head'
+    );
+
+    // Left contact panel → slides in from left
+    gsap.fromTo('.contact-wrap .contact-panel:first-child',
+      { opacity: 0, x: -80, y: 20, rotation: -3, scale: 0.95 },
+      {
+        opacity: 1, x: 0, y: 0, rotation: 0, scale: 1,
+        duration: 1.05, ease: 'power3.out',
+        scrollTrigger: { trigger: '.contact-wrap', start: 'top 87%', toggleActions: 'play none none none' }
+      }
+    );
+    // Right contact panel → slides in from right
+    gsap.fromTo('.contact-wrap .contact-panel:last-child',
+      { opacity: 0, x: 80, y: 20, rotation: 3, scale: 0.95 },
+      {
+        opacity: 1, x: 0, y: 0, rotation: 0, scale: 1,
+        duration: 1.05, ease: 'power3.out', delay: 0.12,
+        scrollTrigger: { trigger: '.contact-wrap', start: 'top 87%', toggleActions: 'play none none none' }
+      }
+    );
+
+    // Contact items inside left panel: cascade from left
     gsap.fromTo('.contact-item',
-      { opacity: 0, x: -20 },
-      { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out', stagger: 0.12,
-        scrollTrigger: { trigger: '.contact-list', start: 'top 88%', toggleActions: 'play none none none' } }
+      { opacity: 0, x: -60, rotation: -2, scale: 0.96 },
+      {
+        opacity: 1, x: 0, rotation: 0, scale: 1,
+        duration: 0.85, ease: 'power3.out', stagger: 0.14,
+        scrollTrigger: { trigger: '.contact-list', start: 'top 88%', toggleActions: 'play none none none' }
+      }
     );
 
-    gsap.fromTo('.about-card p',
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out',
-        scrollTrigger: { trigger: '.about-card', start: 'top 85%', toggleActions: 'play none none none' } }
+    // Form fields: cascade up from below with stagger
+    gsap.fromTo('#contactForm .field',
+      { opacity: 0, y: 35, scale: 0.96, rotation: 1 },
+      {
+        opacity: 1, y: 0, scale: 1, rotation: 0,
+        duration: 0.85, ease: 'power3.out', stagger: 0.11,
+        scrollTrigger: { trigger: '#contactForm', start: 'top 88%', toggleActions: 'play none none none' }
+      }
+    );
+    gsap.fromTo('#contactForm .form-actions',
+      { opacity: 0, y: 25, scale: 0.97 },
+      {
+        opacity: 1, y: 0, scale: 1,
+        duration: 0.75, ease: 'power3.out', delay: 0.4,
+        scrollTrigger: { trigger: '#contactForm', start: 'top 88%', toggleActions: 'play none none none' }
+      }
     );
 
+    /* ── FINAL CTA ───────────────────────────────────────────── */
+    // CTA box: scale + drift up, slightly dramatic
     gsap.fromTo('.cta-box',
-      { opacity: 0, scale: 0.97, y: 30 },
-      { opacity: 1, scale: 1, y: 0, duration: 1.0, ease: 'power3.out',
-        scrollTrigger: { trigger: '.cta-box', start: 'top 88%', toggleActions: 'play none none none' } }
+      { opacity: 0, y: 60, scale: 0.93, rotation: -1 },
+      {
+        opacity: 1, y: 0, scale: 1, rotation: 0,
+        duration: 1.15, ease: 'power3.out',
+        scrollTrigger: { trigger: '.cta-box', start: 'top 88%', toggleActions: 'play none none none' }
+      }
+    );
+    // CTA title: slides up with bold rotation
+    gsap.fromTo('.cta-title',
+      { opacity: 0, y: 50, rotation: -3, scale: 0.94 },
+      {
+        opacity: 1, y: 0, rotation: 0, scale: 1,
+        duration: 1.0, ease: 'power3.out', delay: 0.2,
+        scrollTrigger: { trigger: '.cta-box', start: 'top 88%', toggleActions: 'play none none none' }
+      }
+    );
+    // CTA sub: slides up, lighter
+    gsap.fromTo('.cta-sub',
+      { opacity: 0, y: 35, scale: 0.97 },
+      {
+        opacity: 1, y: 0, scale: 1,
+        duration: 0.9, ease: 'power3.out', delay: 0.35,
+        scrollTrigger: { trigger: '.cta-box', start: 'top 88%', toggleActions: 'play none none none' }
+      }
+    );
+    // CTA action buttons: from right, staggered
+    gsap.fromTo('.cta-actions .btn-wide, .cta-actions .phone',
+      { opacity: 0, x: 60, rotation: 2, scale: 0.96 },
+      {
+        opacity: 1, x: 0, rotation: 0, scale: 1,
+        duration: 0.9, ease: 'power3.out', stagger: 0.12, delay: 0.25,
+        scrollTrigger: { trigger: '.cta-actions', start: 'top 90%', toggleActions: 'play none none none' }
+      }
     );
 
-    gsap.fromTo('footer',
-      { opacity: 0 },
-      { opacity: 1, duration: 0.8, ease: 'power2.out',
-        scrollTrigger: { trigger: 'footer', start: 'top 95%', toggleActions: 'play none none none' } }
+    /* ── FOOTER ─────────────────────────────────────────────── */
+    gsap.fromTo('footer .footer-row > div:first-child',
+      { opacity: 0, x: -40, rotation: -1 },
+      {
+        opacity: 1, x: 0, rotation: 0,
+        duration: 0.85, ease: 'power3.out',
+        scrollTrigger: { trigger: 'footer', start: 'top 95%', toggleActions: 'play none none none' }
+      }
+    );
+    gsap.fromTo('footer .footer-row > div:last-child',
+      { opacity: 0, x: 40, rotation: 1 },
+      {
+        opacity: 1, x: 0, rotation: 0,
+        duration: 0.85, ease: 'power3.out', delay: 0.1,
+        scrollTrigger: { trigger: 'footer', start: 'top 95%', toggleActions: 'play none none none' }
+      }
+    );
+
+    /* ── METRIC / MINI cards inside hero card (on scroll after load) ── */
+    gsap.fromTo('.metric',
+      { opacity: 0, y: 30, scale: 0.94, rotation: 2 },
+      {
+        opacity: 1, y: 0, scale: 1, rotation: 0,
+        duration: 0.8, ease: 'power3.out', stagger: 0.1, delay: 0.2,
+        scrollTrigger: { trigger: '.metric-grid', start: 'top 90%', toggleActions: 'play none none none' }
+      }
+    );
+    gsap.fromTo('.mini',
+      { opacity: 0, y: 25, scale: 0.95 },
+      {
+        opacity: 1, y: 0, scale: 1,
+        duration: 0.75, ease: 'power3.out', stagger: 0.1, delay: 0.3,
+        scrollTrigger: { trigger: '.mini-row', start: 'top 90%', toggleActions: 'play none none none' }
+      }
+    );
+
+    /* ── TRUST PILLS (hero section, after load) ── */
+    gsap.fromTo('.trust-badges .pill',
+      { opacity: 0, y: 20, scale: 0.92, rotation: -1 },
+      {
+        opacity: 1, y: 0, scale: 1, rotation: 0,
+        duration: 0.7, ease: 'power3.out', stagger: 0.1
+      }
     );
 
     /* ══ PARALLAX ══ */
