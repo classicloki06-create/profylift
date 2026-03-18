@@ -1188,9 +1188,271 @@
       .fade-in{ opacity: 1 !important; transform: none !important; }
       .hero-card{ animation: none !important; }
     }
+    /* ══════════════════════════════════════════
+       INTRO SCREEN — CINEMATIC STYLES
+    ══════════════════════════════════════════ */
+    .intro {
+      position: fixed;
+      inset: 0;
+      background: #060609;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      overflow: hidden;
+    }
+    .intro-bg-glow {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(800px 600px at 50% 40%, rgba(216,177,91,.15), transparent 65%),
+        radial-gradient(500px 400px at 20% 80%, rgba(216,177,91,.07), transparent 60%);
+      pointer-events: none;
+      animation: introGlowPulse 3s ease-in-out infinite;
+    }
+    @keyframes introGlowPulse {
+      0%,100% { opacity: .8; }
+      50%      { opacity: 1.2; }
+    }
+    .intro-inner {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* Phone */
+    .phone {
+      width: 210px;
+      height: 410px;
+      border-radius: 38px;
+      background: linear-gradient(160deg, #1a1a22, #0d0d12);
+      border: 1.5px solid rgba(255,255,255,.14);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0 10px;
+      transform: rotateY(20deg) rotateX(10deg);
+      transform-style: preserve-3d;
+      box-shadow:
+        0 60px 120px rgba(0,0,0,.85),
+        0 0 0 1px rgba(255,255,255,.06),
+        inset 0 1px 0 rgba(255,255,255,.10),
+        20px 20px 60px rgba(0,0,0,.5),
+        -4px -4px 20px rgba(216,177,91,.06);
+      position: relative;
+      will-change: transform;
+    }
+    /* Side buttons */
+    .phone::before {
+      content: '';
+      position: absolute;
+      right: -3px;
+      top: 90px;
+      width: 3px;
+      height: 55px;
+      background: rgba(255,255,255,.08);
+      border-radius: 2px;
+      box-shadow: 0 20px 0 rgba(255,255,255,.06), 0 36px 0 rgba(255,255,255,.06);
+    }
+    .phone::after {
+      content: '';
+      position: absolute;
+      left: -3px;
+      top: 110px;
+      width: 3px;
+      height: 70px;
+      background: rgba(255,255,255,.07);
+      border-radius: 2px;
+    }
+    .phone-notch {
+      width: 90px;
+      height: 28px;
+      background: #060609;
+      border-radius: 0 0 20px 20px;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .phone-notch::before {
+      content: '';
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #0a0a12;
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 0 8px rgba(216,177,91,.2);
+    }
+    .phone-notch::after {
+      content: '';
+      width: 48px; height: 7px;
+      border-radius: 999px;
+      background: #080810;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .screen {
+      flex: 1;
+      width: 100%;
+      background: #000;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 30%, rgba(216,177,91,.18) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .screen-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+    }
+    .screen-logo {
+      width: 52px; height: 52px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(216,177,91,.22), rgba(216,177,91,.08));
+      border: 1px solid rgba(216,177,91,.30);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 800;
+      color: rgba(241,208,138,.95);
+      letter-spacing: -.02em;
+      box-shadow: 0 0 30px rgba(216,177,91,.25), 0 8px 24px rgba(0,0,0,.5);
+    }
+    .screen-brand {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.90);
+    }
+    .screen-tagline {
+      font-size: 10px;
+      color: rgba(255,255,255,.45);
+      letter-spacing: .08em;
+      text-align: center;
+    }
+    .screen-bar {
+      width: 90px;
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      margin-top: 10px;
+      overflow: hidden;
+    }
+    .screen-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      border-radius: 999px;
+      box-shadow: 0 0 8px rgba(216,177,91,.5);
+    }
+    .phone-home-bar {
+      width: 80px;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.18);
+      flex-shrink: 0;
+    }
+
+    /* Wordmark burst */
+    .intro-wordmark {
+      position: absolute;
+      bottom: -70px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .intro-wordmark span {
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 800;
+      letter-spacing: .18em;
+      background: linear-gradient(90deg, rgba(241,208,138,1), rgba(216,177,91,1), rgba(255,255,255,.85));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline-block;
+      opacity: 0;
+    }
+
+    /* ══ EXISTING ENHANCEMENTS ══ */
+
+    /* hero perspective already in base — reinforce */
+    .hero { perspective: 1200px; }
+
+    /* hero-card float — reinforce (already set via CSS anim) */
+    .hero-card {
+      animation: float 6s ease-in-out infinite;
+      transform-style: preserve-3d;
+    }
+    @keyframes float {
+      0%   { transform: translateY(0px); }
+      50%  { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+    /* pause float during tilt */
+    .hero-card.tilt-active { animation-play-state: paused; }
+
+    /* big-card hover reinforcement */
+    .big-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      border-color: rgba(216,177,91,.28);
+      box-shadow: 0 28px 80px rgba(0,0,0,.65);
+    }
+
+    /* ── body locked during intro ── */
+    body.intro-active { overflow: hidden; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .intro { display: none !important; }
+      body.intro-active { overflow: auto !important; }
+    }
   </style>
 </head>
 <body>
+  <!-- ══════════════════════════════════════════
+       CINEMATIC INTRO SCREEN
+  ══════════════════════════════════════════ -->
+  <div class="intro" id="introScreen" aria-hidden="true" role="presentation">
+    <div class="intro-bg-glow" aria-hidden="true"></div>
+    <div class="intro-inner">
+      <div class="phone" id="introPhone">
+        <div class="phone-notch"></div>
+        <div class="screen">
+          <div class="screen-content">
+            <div class="screen-logo">P</div>
+            <div class="screen-brand">Profylift</div>
+            <div class="screen-tagline">Luxury Instagram Growth</div>
+            <div class="screen-bar"><div class="screen-bar-fill" id="screenBarFill"></div></div>
+          </div>
+        </div>
+        <div class="phone-home-bar"></div>
+      </div>
+      <div class="intro-wordmark" id="introWordmark">
+        <span>P</span><span>R</span><span>O</span><span>F</span><span>Y</span><span>L</span><span>I</span><span>F</span><span>T</span>
+      </div>
+    </div>
+  </div>
+  <!-- END INTRO -->
+
   <a class="skip-link" href="#home">Skip to content</a>
   <div class="top-glow" aria-hidden="true" id="topGlow"></div>
   <div class="parallax-glow-1" aria-hidden="true" id="parallaxGlow1"></div>
@@ -1503,7 +1765,7 @@
           <div class="contact-panel fade-in" aria-label="Contact form">
             <h3 style="margin:0;font-size:18px;letter-spacing:-.01em;">Send a message</h3>
             <p style="margin:10px 0 0;color:rgba(255,255,255,.72);line-height:1.8;font-size:14px;">
-              Use the form below. It will open your email client addressed to <span style="color:rgba(241,208,138,.95);font-weight:700;">profylift@gmail.com</span>.
+              Use the form below. It will open your email client addressed to <span style="color:rgba(241,208,138,.95);font-weight:700;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ff8f8d9099869396998bbf98929e9693d19c9092">[email&#160;protected]</a></span>.
             </p>
 
             <form id="contactForm" action="mailto:profylift@gmail.com" method="post" enctype="text/plain">
@@ -1712,7 +1974,7 @@
     </div>
   </template>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   (function () {
     /* ─────────────────────────────────────────────────────────────
        ORIGINAL SITE LOGIC (unchanged)
@@ -1844,219 +2106,202 @@
     });
     document.getElementById('contactForm').addEventListener('submit', closeMenu);
 
+
     /* ─────────────────────────────────────────────────────────────
-       GSAP PREMIUM ANIMATIONS
+       GSAP PREMIUM ANIMATIONS + CINEMATIC INTRO
     ───────────────────────────────────────────────────────────── */
     if (typeof gsap === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ══════════════════════════════════════════
+       INTRO SEQUENCE
+    ══════════════════════════════════════════ */
+    if (!reducedMotion) {
+      const intro      = document.getElementById('introScreen');
+      const introPhone = document.getElementById('introPhone');
+      const wordmark   = document.getElementById('introWordmark');
+      const barFill    = document.getElementById('screenBarFill');
+      const letters    = wordmark ? wordmark.querySelectorAll('span') : [];
+
+      document.body.classList.add('intro-active');
+
+      const introTl = gsap.timeline({
+        onComplete: () => { document.body.classList.remove('intro-active'); }
+      });
+
+      introTl
+        .set(intro, { opacity: 1 })
+        .from(introPhone, {
+          y: 120, opacity: 0, rotateX: -30,
+          duration: 1.2, ease: 'power3.out'
+        })
+        .to(introPhone, {
+          y: -14, duration: 1.8, ease: 'sine.inOut',
+          yoyo: true, repeat: 2
+        }, '-=0.2')
+        .to(barFill, {
+          width: '100%', duration: 1.4, ease: 'power2.inOut'
+        }, '<')
+        .to(wordmark, { opacity: 1, duration: 0.01 }, '-=0.9')
+        .to(letters, {
+          opacity: 1, y: 0,
+          duration: 0.06, stagger: 0.055, ease: 'power2.out'
+        }, '<')
+        .to(introPhone, {
+          scale: 10, rotateY: 0, rotateX: 0, opacity: 0,
+          duration: 1.4, ease: 'power3.inOut'
+        }, '+=0.3')
+        .to(wordmark, {
+          opacity: 0, scale: 1.4, duration: 0.6, ease: 'power2.in'
+        }, '<+0.3')
+        .to(intro, {
+          opacity: 0, duration: 0.7, ease: 'power2.inOut',
+          onComplete: () => { intro.style.display = 'none'; }
+        }, '-=0.5')
+        .add(() => { fireHeroEntrance(); }, '-=0.4');
+
+    } else {
+      const intro = document.getElementById('introScreen');
+      if (intro) intro.style.display = 'none';
+      document.body.classList.remove('intro-active');
+      fireHeroEntrance();
+    }
+
+    function fireHeroEntrance() {
+      const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      heroTl
+        .from('#heroKicker', { opacity: 0, y: 30, duration: 0.9 }, 0.1)
+        .from('#heroH1',      { opacity: 0, y: 36, duration: 1.0 }, 0.35)
+        .from('#heroSub',     { opacity: 0, y: 28, duration: 0.85 }, 0.55)
+        .from('#heroActions', { opacity: 0, y: 22, duration: 0.75 }, 0.72)
+        .from('#heroTrust',   { opacity: 0, y: 18, duration: 0.70 }, 0.88)
+        .from('#heroCard',    { opacity: 0, y: 40, duration: 1.0, ease: 'power2.out' }, 0.50);
+    }
+
     if (reducedMotion) return;
 
-    /* ── 1. HERO ENTRANCE (staggered, cinematic) ── */
-    const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-    heroTl
-      .set('#heroKicker, #heroH1, #heroSub, #heroActions, #heroTrust, #heroCard', { opacity: 0, y: 30 })
-      .to('#heroKicker', { opacity: 1, y: 0, duration: 0.9, delay: 0.2 })
-      .to('#heroH1',     { opacity: 1, y: 0, duration: 1.0 }, '-=0.55')
-      .to('#heroSub',    { opacity: 1, y: 0, duration: 0.85 }, '-=0.65')
-      .to('#heroActions',{ opacity: 1, y: 0, duration: 0.75 }, '-=0.6')
-      .to('#heroTrust',  { opacity: 1, y: 0, duration: 0.7 },  '-=0.55')
-      .to('#heroCard',   { opacity: 1, y: 0, duration: 1.0, ease: 'power2.out' }, '-=0.5');
-
-    /* ── 2. SCROLL-TRIGGERED FADE+SLIDE for all fade-in elements ── */
+    /* ══ SCROLL ANIMATIONS ══ */
     document.querySelectorAll('.fade-in').forEach(el => {
-      // skip hero elements already animated above
       if (['heroLeft','heroCard'].includes(el.id)) return;
       gsap.fromTo(el,
         { opacity: 0, y: 40 },
-        {
-          opacity: 1, y: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 88%',
-            toggleActions: 'play none none none'
-          }
-        }
+        { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' } }
       );
     });
 
-    /* ── 3. BIG CARDS staggered on scroll ── */
     gsap.fromTo('.big-card',
       { opacity: 0, y: 50 },
-      {
-        opacity: 1, y: 0,
-        duration: 0.85,
-        ease: 'power3.out',
-        stagger: 0.12,
-        scrollTrigger: {
-          trigger: '#bigCardGrid',
-          start: 'top 85%',
-          toggleActions: 'play none none none'
-        }
-      }
+      { opacity: 1, y: 0, duration: 0.85, ease: 'power3.out', stagger: 0.12,
+        scrollTrigger: { trigger: '#bigCardGrid', start: 'top 85%', toggleActions: 'play none none none' } }
     );
 
-    /* ── 4. SECTION HEADINGS stagger ── */
     document.querySelectorAll('.section-head').forEach(head => {
-      const children = head.querySelectorAll('h2, p');
-      gsap.fromTo(children,
+      gsap.fromTo(head.querySelectorAll('h2, p'),
         { opacity: 0, y: 24 },
-        {
-          opacity: 1, y: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          stagger: 0.15,
-          scrollTrigger: {
-            trigger: head,
-            start: 'top 88%',
-            toggleActions: 'play none none none'
-          }
-        }
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.15,
+          scrollTrigger: { trigger: head, start: 'top 88%', toggleActions: 'play none none none' } }
       );
     });
 
-    /* ── 5. CONTACT items stagger ── */
     gsap.fromTo('.contact-item',
       { opacity: 0, x: -20 },
-      {
-        opacity: 1, x: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-        stagger: 0.12,
-        scrollTrigger: {
-          trigger: '.contact-list',
-          start: 'top 88%',
-          toggleActions: 'play none none none'
-        }
-      }
+      { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out', stagger: 0.12,
+        scrollTrigger: { trigger: '.contact-list', start: 'top 88%', toggleActions: 'play none none none' } }
     );
 
-    /* ── 6. CTA BOX animate in ── */
+    gsap.fromTo('.about-card p',
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out',
+        scrollTrigger: { trigger: '.about-card', start: 'top 85%', toggleActions: 'play none none none' } }
+    );
+
     gsap.fromTo('.cta-box',
       { opacity: 0, scale: 0.97, y: 30 },
-      {
-        opacity: 1, scale: 1, y: 0,
-        duration: 1.0,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.cta-box',
-          start: 'top 88%',
-          toggleActions: 'play none none none'
-        }
-      }
+      { opacity: 1, scale: 1, y: 0, duration: 1.0, ease: 'power3.out',
+        scrollTrigger: { trigger: '.cta-box', start: 'top 88%', toggleActions: 'play none none none' } }
     );
 
-    /* ── 7. PARALLAX — background glows on scroll ── */
+    gsap.fromTo('footer',
+      { opacity: 0 },
+      { opacity: 1, duration: 0.8, ease: 'power2.out',
+        scrollTrigger: { trigger: 'footer', start: 'top 95%', toggleActions: 'play none none none' } }
+    );
+
+    /* ══ PARALLAX ══ */
     gsap.to('#topGlow', {
-      yPercent: 35,
-      ease: 'none',
+      yPercent: 35, ease: 'none',
       scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: 1.5 }
     });
     gsap.to('#parallaxGlow1', {
-      yPercent: 20,
-      ease: 'none',
+      yPercent: 20, ease: 'none',
       scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: 2 }
     });
     gsap.to('#parallaxGlow2', {
-      yPercent: -18,
-      ease: 'none',
+      yPercent: -18, ease: 'none',
       scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: 1.8 }
     });
 
-    /* ── 8. MOUSE-BASED 3D TILT — hero-card ── */
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const glow = document.querySelector('.top-glow');
+      if (glow) glow.style.transform = `translateY(${scrollY * 0.2}px)`;
+    }, { passive: true });
+
+    /* ══ 3D TILT — hero-card ══ */
     (function setupHeroTilt() {
       const card = document.getElementById('heroCard');
       if (!card) return;
-
       const MAX_TILT = 10;
-      const MAX_SHADOW_OFFSET = 18;
-      let rafId = null;
-      let targetRX = 0, targetRY = 0;
-      let currentRX = 0, currentRY = 0;
-      let isHovered = false;
-
-      function lerp(a, b, t) { return a + (b - a) * t; }
-
+      let rafId = null, targetRX = 0, targetRY = 0, currentRX = 0, currentRY = 0, isHovered = false;
+      const lerp = (a, b, t) => a + (b - a) * t;
       function onMove(e) {
         const rect = card.getBoundingClientRect();
-        const cx   = rect.left + rect.width  / 2;
-        const cy   = rect.top  + rect.height / 2;
-        const dx   = (e.clientX - cx) / (rect.width  / 2);
-        const dy   = (e.clientY - cy) / (rect.height / 2);
-        targetRY =  dx * MAX_TILT;
-        targetRX = -dy * MAX_TILT;
-
-        // update sheen position
-        const sheenX = ((e.clientX - rect.left) / rect.width  * 100).toFixed(1);
-        const sheenY = ((e.clientY - rect.top ) / rect.height * 100).toFixed(1);
-        const sheen  = card.querySelector('.tilt-sheen');
-        if (sheen) sheen.style.background = `radial-gradient(ellipse at ${sheenX}% ${sheenY}%, rgba(255,255,255,.10), transparent 65%)`;
+        const dx = (e.clientX - rect.left - rect.width  / 2) / (rect.width  / 2);
+        const dy = (e.clientY - rect.top  - rect.height / 2) / (rect.height / 2);
+        targetRY =  dx * MAX_TILT; targetRX = -dy * MAX_TILT;
+        const sheen = card.querySelector('.tilt-sheen');
+        if (sheen) {
+          const sx = ((e.clientX - rect.left) / rect.width  * 100).toFixed(1);
+          const sy = ((e.clientY - rect.top ) / rect.height * 100).toFixed(1);
+          sheen.style.background = `radial-gradient(ellipse at ${sx}% ${sy}%, rgba(255,255,255,.10), transparent 65%)`;
+        }
       }
-
       function tick() {
         currentRX = lerp(currentRX, isHovered ? targetRX : 0, 0.09);
         currentRY = lerp(currentRY, isHovered ? targetRY : 0, 0.09);
-
-        const shadowX = (currentRY / MAX_TILT) * MAX_SHADOW_OFFSET;
-        const shadowY = (-currentRX / MAX_TILT) * MAX_SHADOW_OFFSET + 24;
-        const scale   = isHovered ? 1.025 : 1;
-
+        const shadowX = (currentRY / MAX_TILT) * 18;
+        const shadowY = (-currentRX / MAX_TILT) * 18 + 24;
         gsap.set(card, {
-          rotateX: currentRX,
-          rotateY: currentRY,
-          scale:   scale,
+          rotateX: currentRX, rotateY: currentRY, scale: isHovered ? 1.025 : 1,
           transformPerspective: 900,
           boxShadow: `${shadowX}px ${shadowY}px 60px rgba(0,0,0,.60), 0 4px 20px rgba(216,177,91,.08)`,
           force3D: true
         });
-
         if (Math.abs(currentRX) > 0.02 || Math.abs(currentRY) > 0.02 || isHovered) {
           rafId = requestAnimationFrame(tick);
         } else {
-          gsap.set(card, { clearProps: 'rotateX,rotateY,boxShadow' });
-          rafId = null;
+          gsap.set(card, { clearProps: 'rotateX,rotateY,boxShadow' }); rafId = null;
         }
       }
-
-      card.addEventListener('mouseenter', () => {
-        isHovered = true;
-        card.classList.add('tilt-active');
-        if (!rafId) rafId = requestAnimationFrame(tick);
-      });
+      card.addEventListener('mouseenter', () => { isHovered = true; card.classList.add('tilt-active'); if (!rafId) rafId = requestAnimationFrame(tick); });
       card.addEventListener('mousemove', onMove);
-      card.addEventListener('mouseleave', () => {
-        isHovered = false;
-        targetRX  = 0;
-        targetRY  = 0;
-        card.classList.remove('tilt-active');
-        if (!rafId) rafId = requestAnimationFrame(tick);
-      });
+      card.addEventListener('mouseleave', () => { isHovered = false; targetRX = 0; targetRY = 0; card.classList.remove('tilt-active'); if (!rafId) rafId = requestAnimationFrame(tick); });
     })();
 
-    /* ── 9. MOUSE-BASED 3D TILT — big-cards ── */
+    /* ══ 3D TILT — big-cards ══ */
     (function setupCardTilt() {
       const MAX_TILT = 8;
-
       document.querySelectorAll('.big-card').forEach(card => {
-        let rafId = null;
-        let targetRX = 0, targetRY = 0;
-        let currentRX = 0, currentRY = 0;
-        let isHovered = false;
-
-        function lerp(a, b, t) { return a + (b - a) * t; }
-
+        let rafId = null, targetRX = 0, targetRY = 0, currentRX = 0, currentRY = 0, isHovered = false;
+        const lerp = (a, b, t) => a + (b - a) * t;
         function onMove(e) {
           const rect = card.getBoundingClientRect();
-          const dx   = (e.clientX - rect.left  - rect.width  / 2) / (rect.width  / 2);
-          const dy   = (e.clientY - rect.top   - rect.height / 2) / (rect.height / 2);
-          targetRY   =  dx * MAX_TILT;
-          targetRX   = -dy * MAX_TILT;
-
-          // sheen follow cursor
+          const dx = (e.clientX - rect.left - rect.width  / 2) / (rect.width  / 2);
+          const dy = (e.clientY - rect.top  - rect.height / 2) / (rect.height / 2);
+          targetRY =  dx * MAX_TILT; targetRX = -dy * MAX_TILT;
           const sheen = card.querySelector('.card-sheen');
           if (sheen) {
             const sx = ((e.clientX - rect.left) / rect.width  * 100).toFixed(1);
@@ -2064,47 +2309,29 @@
             sheen.style.background = `radial-gradient(ellipse at ${sx}% ${sy}%, rgba(255,255,255,.07), transparent 60%)`;
           }
         }
-
         function tick() {
           currentRX = lerp(currentRX, isHovered ? targetRX : 0, 0.10);
           currentRY = lerp(currentRY, isHovered ? targetRY : 0, 0.10);
-
-          const scaleVal = isHovered ? 1.02 : 1;
-          const ty       = isHovered ? -6   : 0;
-          const shadowStrength = isHovered ? 0.65 : 0.45;
-
           gsap.set(card, {
-            rotateX: currentRX,
-            rotateY: currentRY,
-            scale:   scaleVal,
-            y:       ty,
+            rotateX: currentRX, rotateY: currentRY,
+            scale: isHovered ? 1.02 : 1, y: isHovered ? -6 : 0,
             transformPerspective: 800,
-            boxShadow: `0 ${14 + (isHovered ? 12 : 0)}px ${isHovered ? 80 : 40}px rgba(0,0,0,${shadowStrength})`,
+            boxShadow: `0 ${14 + (isHovered ? 12 : 0)}px ${isHovered ? 80 : 40}px rgba(0,0,0,${isHovered ? .65 : .45})`,
             force3D: true
           });
-
           if (Math.abs(currentRX) > 0.02 || Math.abs(currentRY) > 0.02 || isHovered) {
             rafId = requestAnimationFrame(tick);
           } else {
-            gsap.set(card, { clearProps: 'rotateX,rotateY,y,scale,boxShadow' });
-            rafId = null;
+            gsap.set(card, { clearProps: 'rotateX,rotateY,y,scale,boxShadow' }); rafId = null;
           }
         }
-
-        card.addEventListener('mouseenter', () => {
-          isHovered = true;
-          if (!rafId) rafId = requestAnimationFrame(tick);
-        });
+        card.addEventListener('mouseenter', () => { isHovered = true; if (!rafId) rafId = requestAnimationFrame(tick); });
         card.addEventListener('mousemove', onMove);
-        card.addEventListener('mouseleave', () => {
-          isHovered = false;
-          targetRX = 0; targetRY = 0;
-          if (!rafId) rafId = requestAnimationFrame(tick);
-        });
+        card.addEventListener('mouseleave', () => { isHovered = false; targetRX = 0; targetRY = 0; if (!rafId) rafId = requestAnimationFrame(tick); });
       });
     })();
 
-    /* ── 10. MAGNETIC HOVER on primary buttons ── */
+    /* ══ MAGNETIC BUTTONS ══ */
     document.querySelectorAll('.btn-primary').forEach(btn => {
       btn.addEventListener('mousemove', e => {
         const rect = btn.getBoundingClientRect();
@@ -2116,36 +2343,6 @@
         gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1,0.4)' });
       });
     });
-
-    /* ── 11. ABOUT CARD reveal ── */
-    gsap.fromTo('.about-card p',
-      { opacity: 0, y: 20 },
-      {
-        opacity: 1, y: 0,
-        duration: 1.0,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.about-card',
-          start: 'top 85%',
-          toggleActions: 'play none none none'
-        }
-      }
-    );
-
-    /* ── 12. FOOTER fade ── */
-    gsap.fromTo('footer',
-      { opacity: 0 },
-      {
-        opacity: 1,
-        duration: 0.8,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: 'footer',
-          start: 'top 95%',
-          toggleActions: 'play none none none'
-        }
-      }
-    );
 
   })();
   </script>
