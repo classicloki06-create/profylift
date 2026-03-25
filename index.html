@@ -2952,7 +2952,14 @@
 
 <div id="chatbox">
   <div id="chat-header">Profylift AI</div>
-  <div id="chat-messages">Hey 👋 Ask me anything about our services!</div>
+ <div id="chat-messages">
+Hey 👋 I'm Profylift AI.<br><br>
+I can help you with:
+<br>• Pricing 💰
+<br>• Services 📈
+<br>• Reels 🎬
+<br><br>Ask me anything 👇
+</div>
   <div id="chat-input">
     <input type="text" id="userInput" placeholder="Type...">
     <button onclick="sendMsg()">➤</button>
@@ -2973,18 +2980,47 @@ function sendMsg(){
   if(!msg) return;
 
   const chat = document.getElementById("chat-messages");
+  const lower = msg.toLowerCase();
 
-  chat.innerHTML += "<div><b>You:</b> "+msg+"</div>";
+  // Show user message
+  chat.innerHTML += `<div><b>You:</b> ${msg}</div>`;
 
-  let reply = "We'll help you grow your Instagram 🚀";
+  let reply = "";
 
-  if(msg.toLowerCase().includes("price")) reply = "Our pricing depends on your needs. Contact us for a custom plan.";
-  if(msg.toLowerCase().includes("service")) reply = "We offer reels editing, content creation, and monthly growth.";
-  if(msg.toLowerCase().includes("contact")) reply = "Scroll down or use WhatsApp to contact us!";
+  // 🔥 SMART RESPONSES
 
-  chat.innerHTML += "<div><b>Bot:</b> "+reply+"</div>";
+  if(lower.includes("price") || lower.includes("cost") || lower.includes("fees")){
+    reply = "Our pricing depends on your goals and content needs. Most clients start monthly. Want me to connect you on WhatsApp for a quick quote?";
+  }
 
-  input.value="";
+  else if(lower.includes("service") || lower.includes("what do you do")){
+    reply = "We help brands grow on Instagram using reels, content strategy, and monthly management. Basically — we turn your page into a growth machine.";
+  }
+
+  else if(lower.includes("reel") || lower.includes("editing")){
+    reply = "We create high-retention reels with hooks, captions, and premium edits — designed to go viral and convert viewers into followers.";
+  }
+
+  else if(lower.includes("time") || lower.includes("how long")){
+    reply = "Most clients start seeing engagement improvements within weeks, and strong growth within 1–2 months depending on consistency.";
+  }
+
+  else if(lower.includes("contact") || lower.includes("call") || lower.includes("whatsapp")){
+    reply = `You can message us directly here 👉 <a href="https://wa.me/917010079036" target="_blank">WhatsApp</a>`;
+  }
+
+  else if(lower.includes("who") || lower.includes("about")){
+    reply = "Profylift is a premium Instagram growth agency focused on luxury content and real results — not just random posting.";
+  }
+
+  else{
+    reply = "Got it 👍 Tell me more about your brand — I’ll guide you. Or we can jump on WhatsApp for faster help.";
+  }
+
+  // Bot reply
+  chat.innerHTML += `<div><b>Bot:</b> ${reply}</div>`;
+
+  input.value = "";
   chat.scrollTop = chat.scrollHeight;
 }
 </script>
