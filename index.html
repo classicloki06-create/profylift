@@ -16,28 +16,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
 
-<div style="position:fixed; bottom:20px; right:20px; background:#111; padding:15px; border-radius:10px; width:250px; z-index:9999;">
-  <input id="userInput" placeholder="Ask something..." style="width:100%; padding:8px; margin-bottom:10px;" />
-  <button onclick="sendMessage()" style="width:100%; padding:8px;">Send</button>
-  <p id="reply" style="color:white; margin-top:10px;"></p>
-</div>
 
-<script>
-async function sendMessage() {
-  const input = document.getElementById("userInput").value;
-
-  const res = await fetch("/api/chat", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ message: input })
-  });
-
-  const data = await res.json();
-  document.getElementById("reply").innerText = data.reply;
-}
-</script>
 
 <body>
   <!-- ══════════════════════════════════════════
@@ -639,7 +618,29 @@ async function sendMessage() {
       </div>
     </div>
   </template>
+  
+<div style="position:fixed; bottom:20px; right:20px; background:#111; padding:15px; border-radius:10px; width:250px; z-index:9999;">
+  <input id="userInput" placeholder="Ask something..." style="width:100%; padding:8px; margin-bottom:10px;" />
+  <button onclick="sendMessage()" style="width:100%; padding:8px;">Send</button>
+  <p id="reply" style="color:white; margin-top:10px;"></p>
+</div>
 
+<script>
+async function sendMessage() {
+  const input = document.getElementById("userInput").value;
+
+  const res = await fetch("/api/chat", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ message: input })
+  });
+
+  const data = await res.json();
+  document.getElementById("reply").innerText = data.reply;
+}
+</script>
   <script src="script.js" defer></script>
 </body>
 
