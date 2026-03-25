@@ -2982,45 +2982,39 @@ function sendMsg(){
   const chat = document.getElementById("chat-messages");
   const lower = msg.toLowerCase();
 
-  // Show user message
   chat.innerHTML += `<div><b>You:</b> ${msg}</div>`;
 
   let reply = "";
 
-  // 🔥 SMART RESPONSES
+  // 🔥 IMPROVED MATCHING
 
-  if(lower.includes("price") || lower.includes("cost") || lower.includes("fees")){
-    reply = "Our pricing depends on your goals and content needs. Most clients start monthly. Want me to connect you on WhatsApp for a quick quote?";
+  if(lower.includes("price") || lower.includes("pricing") || lower.includes("cost") || lower.includes("fees")){
+    reply = "Our pricing depends on your goals and content needs. Want a quick quote? 👉 <a href='https://wa.me/917010079036' target='_blank'>WhatsApp us</a>";
   }
 
-  else if(lower.includes("service") || lower.includes("what do you do")){
-    reply = "We help brands grow on Instagram using reels, content strategy, and monthly management. Basically — we turn your page into a growth machine.";
+  else if(lower.includes("service") || lower.includes("do you") || lower.includes("what do")){
+    reply = "We help brands grow on Instagram using reels, content strategy, and monthly management.";
   }
 
-  else if(lower.includes("reel") || lower.includes("editing")){
-    reply = "We create high-retention reels with hooks, captions, and premium edits — designed to go viral and convert viewers into followers.";
+  else if(lower.includes("reel") || lower.includes("editing") || lower.includes("video")){
+    reply = "We create high-retention reels with hooks, captions, and premium edits designed to grow your page.";
   }
 
-  else if(lower.includes("time") || lower.includes("how long")){
-    reply = "Most clients start seeing engagement improvements within weeks, and strong growth within 1–2 months depending on consistency.";
+  else if(lower.includes("about") || lower.includes("who")){
+    reply = "Profylift is a premium Instagram growth agency focused on luxury content and real results.";
   }
 
-  else if(lower.includes("contact") || lower.includes("call") || lower.includes("whatsapp")){
-    reply = `You can message us directly here 👉 <a href="https://wa.me/917010079036" target="_blank">WhatsApp</a>`;
-  }
-
-  else if(lower.includes("who") || lower.includes("about")){
-    reply = "Profylift is a premium Instagram growth agency focused on luxury content and real results — not just random posting.";
+  else if(lower.includes("contact") || lower.includes("whatsapp") || lower.includes("call")){
+    reply = "Message us directly here 👉 <a href='https://wa.me/917010079036' target='_blank'>WhatsApp</a>";
   }
 
   else{
-    reply = "Got it 👍 Tell me more about your brand — I’ll guide you. Or we can jump on WhatsApp for faster help.";
+    reply = "Got it 👍 Tell me what you need help with (pricing, reels, growth, etc).";
   }
 
-  // Bot reply
   chat.innerHTML += `<div><b>Bot:</b> ${reply}</div>`;
 
-  input.value = "";
+  input.value="";
   chat.scrollTop = chat.scrollHeight;
 }
 </script>
