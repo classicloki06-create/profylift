@@ -2877,5 +2877,116 @@
 
   })();
   </script>
+  <!-- 🤖 CHATBOT -->
+<style>
+#chatbot-btn{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: #d8b15b;
+  color: #000;
+  font-size: 22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:9999;
+  box-shadow: 0 10px 30px rgba(0,0,0,.4);
+}
+
+#chatbox{
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 300px;
+  height: 380px;
+  background: #111;
+  border-radius: 16px;
+  display:none;
+  flex-direction:column;
+  overflow:hidden;
+  z-index:9999;
+  border:1px solid rgba(255,255,255,.1);
+}
+
+#chat-header{
+  padding:10px;
+  background:#d8b15b;
+  color:#000;
+  font-weight:bold;
+}
+
+#chat-messages{
+  flex:1;
+  padding:10px;
+  font-size:13px;
+  overflow-y:auto;
+}
+
+#chat-input{
+  display:flex;
+  border-top:1px solid rgba(255,255,255,.1);
+}
+
+#chat-input input{
+  flex:1;
+  padding:10px;
+  border:none;
+  outline:none;
+  background:#222;
+  color:#fff;
+}
+
+#chat-input button{
+  padding:10px;
+  background:#d8b15b;
+  border:none;
+  cursor:pointer;
+}
+</style>
+
+<div id="chatbot-btn">💬</div>
+
+<div id="chatbox">
+  <div id="chat-header">Profylift AI</div>
+  <div id="chat-messages">Hey 👋 Ask me anything about our services!</div>
+  <div id="chat-input">
+    <input type="text" id="userInput" placeholder="Type...">
+    <button onclick="sendMsg()">➤</button>
+  </div>
+</div>
+
+<script>
+const btn = document.getElementById("chatbot-btn");
+const box = document.getElementById("chatbox");
+
+btn.onclick = () => {
+  box.style.display = box.style.display === "flex" ? "none" : "flex";
+};
+
+function sendMsg(){
+  const input = document.getElementById("userInput");
+  const msg = input.value.trim();
+  if(!msg) return;
+
+  const chat = document.getElementById("chat-messages");
+
+  chat.innerHTML += "<div><b>You:</b> "+msg+"</div>";
+
+  let reply = "We'll help you grow your Instagram 🚀";
+
+  if(msg.toLowerCase().includes("price")) reply = "Our pricing depends on your needs. Contact us for a custom plan.";
+  if(msg.toLowerCase().includes("service")) reply = "We offer reels editing, content creation, and monthly growth.";
+  if(msg.toLowerCase().includes("contact")) reply = "Scroll down or use WhatsApp to contact us!";
+
+  chat.innerHTML += "<div><b>Bot:</b> "+reply+"</div>";
+
+  input.value="";
+  chat.scrollTop = chat.scrollHeight;
+}
+</script>
 </body>
 </html>
