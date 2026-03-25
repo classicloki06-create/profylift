@@ -38,35 +38,7 @@ async function sendMessage() {
   document.getElementById("reply").innerText = data.reply;
 }
 </script>
-<!-- Chat Button -->
-<div id="chat-toggle" style="position:fixed; bottom:20px; right:20px; background:#000; color:#fff; padding:12px; border-radius:50%; cursor:pointer; z-index:9999;">
-💬
-</div>
 
-<!-- Chatbox -->
-<div id="chatbox" style="display:none; position:fixed; bottom:80px; right:20px; width:300px; background:#111; color:white; border-radius:10px; padding:10px; z-index:9999;">
-  <div id="chat-messages" style="height:150px; overflow-y:auto;"></div>
-  <input id="userInput" placeholder="Ask..." style="width:100%; margin-top:5px;" />
-  <button onclick="sendMessage()" style="width:100%; margin-top:5px;">Send</button>
-</div>
-
-<script>
-document.getElementById("chat-toggle").onclick = () => {
-  const box = document.getElementById("chatbox");
-  box.style.display = box.style.display === "none" ? "block" : "none";
-};
-
-async function sendMessage() {
-  const input = document.getElementById("userInput");
-  const messages = document.getElementById("chat-messages");
-
-  const text = input.value;
-  if (!text) return;
-
-  messages.innerHTML += `<div><b>You:</b> ${text}</div>`;
-  input.value = "";
-
- 
 <body>
   <!-- ══════════════════════════════════════════
        CINEMATIC INTRO SCREEN
