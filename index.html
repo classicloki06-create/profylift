@@ -2974,41 +2974,29 @@ btn.onclick = () => {
   box.style.display = box.style.display === "flex" ? "none" : "flex";
 };
 
-async function sendMsg(){
-  const input = document.getElementById("userInput");
-  const msg = input.value.trim();
-  if(!msg) return;
-
-  const chat = document.getElementById("chat-messages");
-
-  chat.innerHTML += `<div><b>You:</b> ${msg}</div>`;
-
-  input.value = "";
-
-  // Loading message
-  chat.innerHTML += `<div id="loading"><b>Bot:</b> typing...</div>`;
-  chat.scrollTop = chat.scrollHeight;
-
+async function sendMessage(message) {
   try {
     const res = await fetch("/api/chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ message: msg })
+      body: JSON.stringify({ message })
     });
 
     const data = await res.json();
 
-    document.getElementById("loading").remove();
+    if (!res.ok) {
+      console.error(data);
+      return "Something went wrong. Try again.";
+    }
 
-    chat.innerHTML += `<div><b>Bot:</b> ${data.reply}</div>`;
+    return data.reply;
+
   } catch (err) {
-    document.getElementById("loading").remove();
-    chat.innerHTML += `<div><b>Bot:</b> Something went wrong 😅</div>`;
+    console.error(err);
+    return "Error connecting to server.";
   }
-
-  chat.scrollTop = chat.scrollHeight;
 }
 </script>
 </body>
