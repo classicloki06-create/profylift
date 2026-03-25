@@ -2974,47 +2974,40 @@ btn.onclick = () => {
   box.style.display = box.style.display === "flex" ? "none" : "flex";
 };
 
-function sendMsg(){
+async function sendMsg(){
   const input = document.getElementById("userInput");
   const msg = input.value.trim();
   if(!msg) return;
 
   const chat = document.getElementById("chat-messages");
-  const lower = msg.toLowerCase();
 
   chat.innerHTML += `<div><b>You:</b> ${msg}</div>`;
 
-  let reply = "";
+  input.value = "";
 
-  // 🔥 IMPROVED MATCHING
+  // Loading message
+  chat.innerHTML += `<div id="loading"><b>Bot:</b> typing...</div>`;
+  chat.scrollTop = chat.scrollHeight;
 
-  if(lower.includes("price") || lower.includes("pricing") || lower.includes("cost") || lower.includes("fees")){
-    reply = "Our pricing depends on your goals and content needs. Want a quick quote? 👉 <a href='https://wa.me/917010079036' target='_blank'>WhatsApp us</a>";
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message: msg })
+    });
+
+    const data = await res.json();
+
+    document.getElementById("loading").remove();
+
+    chat.innerHTML += `<div><b>Bot:</b> ${data.reply}</div>`;
+  } catch (err) {
+    document.getElementById("loading").remove();
+    chat.innerHTML += `<div><b>Bot:</b> Something went wrong 😅</div>`;
   }
 
-  else if(lower.includes("service") || lower.includes("do you") || lower.includes("what do")){
-    reply = "We help brands grow on Instagram using reels, content strategy, and monthly management.";
-  }
-
-  else if(lower.includes("reel") || lower.includes("editing") || lower.includes("video")){
-    reply = "We create high-retention reels with hooks, captions, and premium edits designed to grow your page.";
-  }
-
-  else if(lower.includes("about") || lower.includes("who")){
-    reply = "Profylift is a premium Instagram growth agency focused on luxury content and real results.";
-  }
-
-  else if(lower.includes("contact") || lower.includes("whatsapp") || lower.includes("call")){
-    reply = "Message us directly here 👉 <a href='https://wa.me/917010079036' target='_blank'>WhatsApp</a>";
-  }
-
-  else{
-    reply = "Got it 👍 Tell me what you need help with (pricing, reels, growth, etc).";
-  }
-
-  chat.innerHTML += `<div><b>Bot:</b> ${reply}</div>`;
-
-  input.value="";
   chat.scrollTop = chat.scrollHeight;
 }
 </script>
