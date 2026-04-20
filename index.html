@@ -1971,124 +1971,12 @@
       <button id="chat-send" aria-label="Send message">➤</button>
     </div>
   </div>
-  <!-- END CHATBOT -->
 
+  <!-- ══ SITE LOGIC (GSAP + modals + nav) ══ -->
   <script>
   (function () {
     "use strict";
 
-    /* ─── CHATBOT ─── */
-    let isWaiting = false;
-
-    const chatBtn  = document.getElementById('chatbot-btn');
-    const chatBox  = document.getElementById('chatbox');
-    const msgsEl   = document.getElementById('chat-messages');
-    const inputEl  = document.getElementById('userInput');
-    const sendBtn  = document.getElementById('chat-send');
-
-    chatBtn.addEventListener('click', () => {
-      const isOpen = chatBox.style.display === 'flex';
-      chatBox.style.display = isOpen ? 'none' : 'flex';
-      if (!isOpen) inputEl.focus();
-    });
-
-    inputEl.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
-    });
-    sendBtn.addEventListener('click', sendMsg);
-
-    window.sendMsg = sendMsg; // keep backward compat if anything calls it
-
-    async function sendMsg() {
-      const text = inputEl.value.trim();
-      if (!text || isWaiting) return;
-
-      isWaiting = true;
-      inputEl.value = '';
-      inputEl.disabled = true;
-      sendBtn.disabled = true;
-
-      appendBubble(text, 'user');
-      const typingId = showTyping();
-
-      let reply;
-      try {
-        const res = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text })
-        });
-        if (!res.ok) throw new Error('API ' + res.status);
-        const data = await res.json();
-        reply = data.reply || 'Got it! Anything else?';
-      } catch (err) {
-        console.error(err);
-        reply = 'Something went wrong. Reach us on WhatsApp for a faster reply!';
-      }
-
-      removeTyping(typingId);
-      appendBubble(reply, 'bot');
-
-      inputEl.disabled = false;
-      sendBtn.disabled = false;
-      inputEl.focus();
-      isWaiting = false;
-    }
-
-    function appendBubble(text, role) {
-      const wrap = document.createElement('div');
-      wrap.style.cssText = 'display:flex;margin-bottom:8px;' +
-        (role === 'user' ? 'justify-content:flex-end' : 'justify-content:flex-start');
-
-      const bubble = document.createElement('div');
-      bubble.style.cssText = [
-        'max-width:82%', 'padding:8px 12px',
-        'border-radius:' + (role === 'user' ? '14px 14px 4px 14px' : '14px 14px 14px 4px'),
-        'font-size:13px', 'line-height:1.5', 'word-break:break-word',
-        role === 'user'
-          ? 'background:#d8b15b;color:#000;font-weight:500'
-          : 'background:rgba(255,255,255,.08);color:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.10)'
-      ].join(';');
-
-      bubble.innerHTML = text
-        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-        .replace(/\n/g,'<br>');
-
-      wrap.appendChild(bubble);
-      msgsEl.appendChild(wrap);
-      msgsEl.scrollTop = msgsEl.scrollHeight;
-    }
-
-    function showTyping() {
-      const id = 'typing-' + Date.now();
-      const wrap = document.createElement('div');
-      wrap.id = id;
-      wrap.style.cssText = 'display:flex;justify-content:flex-start;margin-bottom:8px;';
-      const bubble = document.createElement('div');
-      bubble.style.cssText = 'padding:10px 14px;border-radius:14px 14px 14px 4px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);display:flex;gap:5px;align-items:center;';
-      for (let i = 0; i < 3; i++) {
-        const dot = document.createElement('span');
-        dot.style.cssText = 'width:6px;height:6px;border-radius:50%;background:rgba(216,177,91,.7);display:inline-block;animation:typingBounce 1.2s ease-in-out infinite;animation-delay:' + (i * 0.2) + 's;';
-        bubble.appendChild(dot);
-      }
-      if (!document.getElementById('typing-style')) {
-        const s = document.createElement('style');
-        s.id = 'typing-style';
-        s.textContent = '@keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-5px);opacity:1}}';
-        document.head.appendChild(s);
-      }
-      wrap.appendChild(bubble);
-      msgsEl.appendChild(wrap);
-      msgsEl.scrollTop = msgsEl.scrollHeight;
-      return id;
-    }
-
-    function removeTyping(id) {
-      const el = document.getElementById(id);
-      if (el) el.remove();
-    }
-
-    /* ─── EXISTING SITE LOGIC ─── */
     const header   = document.getElementById('siteHeader');
     const menuBtn  = document.getElementById('menuBtn');
     const navLinks = document.getElementById('navLinks');
@@ -2343,68 +2231,151 @@
 
   })();
   </script>
+
+  <!-- ══ CHATBOT — offline reply logic, no API calls ══ -->
   <script>
-const chatBtn = document.getElementById("chatbot-btn");
-const chatbox = document.getElementById("chatbox");
-const sendBtn = document.getElementById("chat-send");
-const input = document.getElementById("userInput");
-const messages = document.getElementById("chat-messages");
+  (function () {
+    "use strict";
 
-// toggle chat
-chatBtn.onclick = () => {
-  chatbox.style.display = chatbox.style.display === "flex" ? "none" : "flex";
-};
+    /* ── Reply engine ── */
+    function random(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
-// send message
-sendBtn.onclick = sendMessage;
-input.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") sendMessage();
-});
+    function getReply(msg) {
+      const m = msg.toLowerCase();
 
-async function sendMessage() {
-  const userText = input.value.trim();
-  if (!userText) return;
+      if (["hi","hello","hey","yo","sup","hii","heyy"].some(k => m.includes(k)))
+        return random(["Hey 👋 what can I help you with?","Hey! Tell me about your brand 👀","Hi 👋 looking to grow your Instagram?"]);
 
-  // show user msg
-  messages.innerHTML += `<div style="text-align:right;margin:6px 0;">
-    <span style="background:#d8b15b;color:black;padding:8px 12px;border-radius:12px;display:inline-block;">
-      ${userText}
-    </span>
-  </div>`;
+      if (m.includes("how are you"))
+        return "All good 😄 how about you? What do you need help with?";
 
-  input.value = "";
+      if (["who are you","what are you","your name"].some(k => m.includes(k)))
+        return "I'm Profylift AI — I help you understand how we grow Instagram pages 🚀";
 
-  // loading msg
-  const loading = document.createElement("div");
-  loading.innerHTML = `<div style="margin:6px 0;">Typing...</div>`;
-  messages.appendChild(loading);
+      if (["price","pricing","cost","fees","charge","rate","how much"].some(k => m.includes(k)))
+        return random(["Pricing depends on your goals. What niche are you in?","We customize pricing based on your needs. Tell me about your page.","It varies depending on content + management. What are you looking for?"]);
 
-  try {
-    const res = await fetch("/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ message: userText })
+      if (["service","what do you do","offer","help","work"].some(k => m.includes(k)))
+        return "We help brands grow on Instagram using reels, content strategy, and monthly management.";
+
+      if (["reel","video","editing","content","post"].some(k => m.includes(k)))
+        return "We create high-retention reels with strong hooks, captions, and premium edits to boost reach.";
+
+      if (["results","growth","time","how long","followers"].some(k => m.includes(k)))
+        return "Most pages start seeing better engagement within weeks if content is consistent.";
+
+      if (["proof","clients"].some(k => m.includes(k)))
+        return "You can check our client work in the Clients section 👀";
+
+      if (["contact","whatsapp","call","talk","reach"].some(k => m.includes(k)))
+        return 'You can message us here 👉 <a href="https://wa.me/917010079036" target="_blank" style="color:#d8b15b;">WhatsApp</a>';
+
+      if (["where","location","based"].some(k => m.includes(k)))
+        return "We work remotely with clients globally 🌍";
+
+      if (["help me","i need help","what should i do"].some(k => m.includes(k)))
+        return "Tell me your niche and current situation — I'll guide you 👍";
+
+      if (["thanks","thank you","ty"].some(k => m.includes(k)))
+        return "Anytime 🙌 let me know if you need anything else.";
+
+      return "Got you 👍 tell me more about what you need — growth, reels, or pricing?";
+    }
+
+    /* ── DOM refs ── */
+    const chatBtn = document.getElementById("chatbot-btn");
+    const chatBox = document.getElementById("chatbox");
+    const sendBtn = document.getElementById("chat-send");
+    const inputEl = document.getElementById("userInput");
+    const msgsEl  = document.getElementById("chat-messages");
+
+    if (!chatBtn || !chatBox || !sendBtn || !inputEl || !msgsEl) return;
+
+    /* ── Toggle open / close ── */
+    chatBtn.addEventListener("click", () => {
+      const isOpen = chatBox.style.display === "flex";
+      chatBox.style.display = isOpen ? "none" : "flex";
+      if (!isOpen) { setTimeout(() => inputEl.focus(), 60); }
     });
 
-    const data = await res.json();
+    /* ── Enter key sends ── */
+    inputEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+    });
 
-    loading.remove();
+    /* ── Button sends ── */
+    sendBtn.addEventListener("click", sendMessage);
 
-    messages.innerHTML += `<div style="margin:6px 0;">
-      <span style="background:#222;padding:8px 12px;border-radius:12px;display:inline-block;">
-        ${data.reply}
-      </span>
-    </div>`;
+    /* ── Core logic ── */
+    function sendMessage() {
+      const text = inputEl.value.trim();
+      if (!text) return;
 
-  } catch (err) {
-    loading.remove();
-    messages.innerHTML += `<div style="color:red;">Error connecting to AI</div>`;
-  }
+      appendBubble(text, "user");
+      inputEl.value = "";
+      inputEl.disabled = true;
+      sendBtn.disabled = true;
 
-  messages.scrollTop = messages.scrollHeight;
-}
-</script>
+      const typingEl = showTyping();
+
+      setTimeout(() => {
+        typingEl.remove();
+        appendBubble(getReply(text), "bot");
+        inputEl.disabled = false;
+        sendBtn.disabled = false;
+        inputEl.focus();
+      }, 700 + Math.random() * 400);
+    }
+
+    function appendBubble(html, role) {
+      const wrap = document.createElement("div");
+      wrap.style.cssText = "display:flex;margin-bottom:8px;" +
+        (role === "user" ? "justify-content:flex-end" : "justify-content:flex-start");
+
+      const bubble = document.createElement("div");
+      bubble.style.cssText = [
+        "max-width:82%",
+        "padding:9px 13px",
+        "border-radius:" + (role === "user" ? "14px 14px 4px 14px" : "14px 14px 14px 4px"),
+        "font-size:13px",
+        "line-height:1.55",
+        "word-break:break-word",
+        role === "user"
+          ? "background:#d8b15b;color:#000;font-weight:500"
+          : "background:rgba(255,255,255,.08);color:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.10)"
+      ].join(";");
+
+      bubble.innerHTML = html;
+      wrap.appendChild(bubble);
+      msgsEl.appendChild(wrap);
+      msgsEl.scrollTop = msgsEl.scrollHeight;
+    }
+
+    function showTyping() {
+      /* inject animation keyframes once */
+      if (!document.getElementById("tBounceKF")) {
+        const s = document.createElement("style");
+        s.id = "tBounceKF";
+        s.textContent = "@keyframes tBounce{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-5px);opacity:1}}";
+        document.head.appendChild(s);
+      }
+      const wrap = document.createElement("div");
+      wrap.style.cssText = "display:flex;justify-content:flex-start;margin-bottom:8px;";
+      const bubble = document.createElement("div");
+      bubble.style.cssText = "padding:10px 14px;border-radius:14px 14px 14px 4px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);display:flex;gap:5px;align-items:center;";
+      [0, 0.18, 0.36].forEach(delay => {
+        const dot = document.createElement("span");
+        dot.style.cssText = `width:6px;height:6px;border-radius:50%;background:rgba(216,177,91,.75);display:inline-block;animation:tBounce 1.1s ease-in-out infinite ${delay}s;`;
+        bubble.appendChild(dot);
+      });
+      wrap.appendChild(bubble);
+      msgsEl.appendChild(wrap);
+      msgsEl.scrollTop = msgsEl.scrollHeight;
+      return wrap;
+    }
+
+  })();
+  </script>
+
 </body>
 </html>
