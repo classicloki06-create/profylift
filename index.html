@@ -2343,5 +2343,68 @@
 
   })();
   </script>
+  <script>
+const chatBtn = document.getElementById("chatbot-btn");
+const chatbox = document.getElementById("chatbox");
+const sendBtn = document.getElementById("chat-send");
+const input = document.getElementById("userInput");
+const messages = document.getElementById("chat-messages");
+
+// toggle chat
+chatBtn.onclick = () => {
+  chatbox.style.display = chatbox.style.display === "flex" ? "none" : "flex";
+};
+
+// send message
+sendBtn.onclick = sendMessage;
+input.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") sendMessage();
+});
+
+async function sendMessage() {
+  const userText = input.value.trim();
+  if (!userText) return;
+
+  // show user msg
+  messages.innerHTML += `<div style="text-align:right;margin:6px 0;">
+    <span style="background:#d8b15b;color:black;padding:8px 12px;border-radius:12px;display:inline-block;">
+      ${userText}
+    </span>
+  </div>`;
+
+  input.value = "";
+
+  // loading msg
+  const loading = document.createElement("div");
+  loading.innerHTML = `<div style="margin:6px 0;">Typing...</div>`;
+  messages.appendChild(loading);
+
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message: userText })
+    });
+
+    const data = await res.json();
+
+    loading.remove();
+
+    messages.innerHTML += `<div style="margin:6px 0;">
+      <span style="background:#222;padding:8px 12px;border-radius:12px;display:inline-block;">
+        ${data.reply}
+      </span>
+    </div>`;
+
+  } catch (err) {
+    loading.remove();
+    messages.innerHTML += `<div style="color:red;">Error connecting to AI</div>`;
+  }
+
+  messages.scrollTop = messages.scrollHeight;
+}
+</script>
 </body>
 </html>
