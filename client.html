@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Client Profile — Profylift</title>
+  <meta name="description" content="Profylift client profile page" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="logo.png">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root {
+      --bg0: #07070a;
+      --bg1: #0a0a0f;
+      --gold: #d8b15b;
+      --gold2: #f1d08a;
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --muted2: rgba(255,255,255,.50);
+      --border: rgba(255,255,255,.10);
+      --panel: rgba(255,255,255,.05);
+      --max: 1120px;
+      --radius: 20px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      background: var(--bg0);
+      color: var(--text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ── BACKGROUND ── */
+    .bg-layer {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(1000px 700px at 10% -10%, rgba(216,177,91,.13), transparent 60%),
+        radial-gradient(800px 600px at 90% 20%, rgba(216,177,91,.08), transparent 55%),
+        radial-gradient(700px 700px at 50% 100%, rgba(255,255,255,.04), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+    }
+    .grain {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 0; opacity: .05;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 50;
+      height: 72px;
+      display: flex; align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      background: rgba(7,7,10,.80);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: background .3s ease;
+    }
+    header.scrolled { background: rgba(7,7,10,.96); border-bottom-color: rgba(255,255,255,.12); }
+    .header-inner {
+      width: min(var(--max), calc(100% - 44px));
+      margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.85);
+      font-size: 13px; font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+      font-family: inherit;
+    }
+    .back-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.08);
+      border-color: rgba(216,177,91,.24);
+    }
+    .back-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .header-brand {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: rgba(255,255,255,.75);
+    }
+    .header-brand img { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; }
+
+    /* ── CONTAINER ── */
+    .container {
+      width: min(var(--max), calc(100% - 44px));
+      margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+
+    /* ── HERO SECTION ── */
+    .client-hero {
+      padding: 132px 0 80px;
+      position: relative;
+    }
+    .client-hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    /* Left: info */
+    .client-info { }
+    .client-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(216,177,91,.22);
+      background: rgba(216,177,91,.09);
+      color: rgba(255,255,255,.80);
+      font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .client-badge .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 0 5px rgba(216,177,91,.15);
+    }
+    .client-logo-display {
+      width: 90px; height: 90px;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.4);
+      margin-bottom: 22px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.50), 0 0 0 1px rgba(216,177,91,.10);
+    }
+    .client-logo-display img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .client-logo-display .logo-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(216,177,91,.08);
+      font-size: 28px; font-weight: 800;
+      color: rgba(241,208,138,.9);
+    }
+    .client-name {
+      font-size: clamp(38px, 5vw, 64px);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.0;
+      margin-bottom: 10px;
+    }
+    .client-name .accent {
+      background: linear-gradient(90deg, var(--gold2), var(--gold), rgba(255,255,255,.8));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .client-category {
+      font-size: 15px; color: var(--muted); margin-bottom: 24px;
+      letter-spacing: .02em; font-weight: 500;
+    }
+    .client-desc {
+      font-size: 15px; line-height: 1.85;
+      color: rgba(255,255,255,.72);
+      max-width: 52ch;
+      margin-bottom: 32px;
+    }
+    .client-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 13px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.90);
+      font-size: 14px; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+      font-family: inherit;
+    }
+    .btn:hover { transform: translateY(-2px); background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.20); box-shadow: 0 14px 40px rgba(0,0,0,.35); }
+    .btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .btn-gold {
+      background: linear-gradient(180deg, rgba(216,177,91,.22), rgba(216,177,91,.10));
+      border-color: rgba(216,177,91,.28);
+      box-shadow: 0 12px 40px rgba(216,177,91,.10);
+    }
+    .btn-gold:hover { background: linear-gradient(180deg, rgba(216,177,91,.30), rgba(216,177,91,.14)); border-color: rgba(216,177,91,.36); }
+    .btn-gold .btn-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--gold2);
+      box-shadow: 0 0 0 4px rgba(216,177,91,.18);
+    }
+
+    /* Stats row */
+    .stats-row {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      margin-top: 32px; padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .stat {
+      flex: 1; min-width: 100px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.09);
+      background: rgba(255,255,255,.04);
+    }
+    .stat-val { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .stat-label { font-size: 12px; color: var(--muted2); letter-spacing: .08em; text-transform: uppercase; }
+
+    /* Right: phone mockup */
+    .mockup-area {
+      display: flex; justify-content: center; align-items: center;
+      position: relative;
+      min-height: 500px;
+    }
+    .phone-stack {
+      position: relative;
+      width: 240px;
+    }
+    .phone-main {
+      width: 240px;
+      border-radius: 40px;
+      background: linear-gradient(160deg, #1c1c26, #0e0e16);
+      border: 1.5px solid rgba(255,255,255,.14);
+      box-shadow:
+        0 60px 120px rgba(0,0,0,.80),
+        0 0 0 1px rgba(255,255,255,.06),
+        inset 0 1px 0 rgba(255,255,255,.10),
+        20px 20px 60px rgba(0,0,0,.50),
+        -4px -4px 20px rgba(216,177,91,.05);
+      overflow: hidden;
+      position: relative;
+      z-index: 2;
+      animation: phoneFloat 5s ease-in-out infinite;
+    }
+    @keyframes phoneFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50%       { transform: translateY(-14px) rotate(0.5deg); }
+    }
+    .phone-notch {
+      height: 28px;
+      background: #060609;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      border-radius: 0 0 18px 18px;
+      margin: 0 auto;
+      width: 110px;
+      position: relative; z-index: 3;
+    }
+    .phone-notch::before {
+      content: ''; width: 10px; height: 10px; border-radius: 50%;
+      background: #0a0a12; border: 1px solid rgba(255,255,255,.10);
+    }
+    .phone-notch::after {
+      content: ''; width: 50px; height: 6px; border-radius: 999px;
+      background: #080810; border: 1px solid rgba(255,255,255,.08);
+    }
+    .phone-screen {
+      min-height: 380px;
+      background: #000;
+      padding: 10px;
+      display: flex; flex-direction: column; gap: 8px;
+      position: relative;
+    }
+    .phone-screen::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 20%, rgba(216,177,91,.14) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    /* Simulated IG post inside phone */
+    .ig-post {
+      border-radius: 10px;
+      overflow: hidden;
+      background: linear-gradient(160deg, rgba(216,177,91,.15), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.08);
+      position: relative;
+    }
+    .ig-post-header {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 10px 6px;
+    }
+    .ig-post-avatar {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700; color: #000;
+      flex-shrink: 0;
+    }
+    .ig-post-username { font-size: 10px; font-weight: 700; color: rgba(255,255,255,.90); }
+    .ig-post-img {
+      height: 140px;
+      background: linear-gradient(160deg, rgba(216,177,91,.18), rgba(255,255,255,.06));
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .ig-post-img-2 {
+      height: 100px;
+    }
+    .ig-post-img .play-icon {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(255,255,255,.12);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(255,255,255,.18);
+    }
+    .ig-post-img .play-icon svg { width: 16px; height: 16px; fill: rgba(255,255,255,.90); margin-left: 2px; }
+    .reel-label {
+      position: absolute; top: 8px; left: 8px;
+      padding: 3px 7px; border-radius: 6px;
+      background: rgba(0,0,0,.40);
+      font-size: 9px; letter-spacing: .1em; text-transform: uppercase;
+      color: rgba(255,255,255,.80);
+      backdrop-filter: blur(4px);
+    }
+    .ig-post-footer {
+      padding: 6px 10px 8px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .ig-post-icons { display: flex; gap: 6px; }
+    .ig-post-icons svg { width: 14px; height: 14px; fill: none; stroke: rgba(255,255,255,.70); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ig-post-likes { font-size: 9px; color: rgba(255,255,255,.60); font-weight: 600; }
+
+    .phone-home { height: 5px; background: rgba(255,255,255,.15); border-radius: 999px; width: 70px; margin: 8px auto; }
+
+    /* Second phone (behind/tilted) */
+    .phone-secondary {
+      position: absolute;
+      width: 200px;
+      right: -60px;
+      top: 40px;
+      border-radius: 34px;
+      background: linear-gradient(160deg, #181820, #0c0c14);
+      border: 1.5px solid rgba(255,255,255,.10);
+      box-shadow: 0 40px 80px rgba(0,0,0,.65);
+      overflow: hidden;
+      z-index: 1;
+      transform: rotate(6deg) scale(0.92);
+      opacity: 0.7;
+    }
+    .phone-secondary-screen {
+      height: 360px;
+      background: #000;
+      padding: 8px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .phone-secondary-notch {
+      height: 22px; background: #060609;
+      display: flex; align-items: center; justify-content: center;
+      width: 80px; margin: 0 auto;
+      border-radius: 0 0 14px 14px;
+    }
+    .phone-secondary-notch::after { content: ''; width: 40px; height: 5px; border-radius: 999px; background: #080810; }
+
+    /* ── GLOW EFFECTS behind mockup ── */
+    .mockup-glow {
+      position: absolute;
+      width: 360px; height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(216,177,91,.14) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      filter: blur(30px);
+      z-index: 0;
+      animation: glowPulse 4s ease-in-out infinite;
+    }
+    @keyframes glowPulse { 0%,100% { opacity: .8; transform: translate(-50%,-50%) scale(1); } 50% { opacity: 1.1; transform: translate(-50%,-50%) scale(1.08); } }
+
+    /* ── DIVIDER ── */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+      margin: 0;
+    }
+
+    /* ── FEATURES SECTION ── */
+    .features-section { padding: 80px 0; }
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+      color: rgba(216,177,91,.85);
+      margin-bottom: 16px;
+    }
+    .section-label::before { content: ''; width: 28px; height: 1px; background: rgba(216,177,91,.40); }
+    .section-title {
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 700; letter-spacing: -0.025em; line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .section-subtitle {
+      font-size: 15px; color: var(--muted); line-height: 1.75; max-width: 60ch;
+      margin-bottom: 40px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .feature-card {
+      border-radius: 20px;
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,.09);
+      background: linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+      position: relative; overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(400px 200px at 20% 20%, rgba(216,177,91,.10), transparent 60%);
+      opacity: 0; transition: opacity .3s ease; pointer-events: none;
+    }
+    .feature-card:hover { transform: translateY(-5px); border-color: rgba(216,177,91,.22); box-shadow: 0 22px 70px rgba(0,0,0,.55); }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-icon {
+      width: 44px; height: 44px; border-radius: 14px;
+      background: rgba(216,177,91,.10);
+      border: 1px solid rgba(216,177,91,.20);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 24px rgba(216,177,91,.06);
+    }
+    .feature-icon svg { width: 22px; height: 22px; fill: none; stroke: rgba(241,208,138,.9); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .feature-title { font-size: 16px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 8px; }
+    .feature-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    /* ── INSTAGRAM PREVIEW SECTION ── */
+    .instagram-section { padding: 80px 0; }
+    .ig-preview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+    .ig-left { }
+    .ig-profile-card {
+      border-radius: 22px;
+      padding: 26px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      box-shadow: 0 24px 70px rgba(0,0,0,.50);
+      position: relative; overflow: hidden;
+    }
+    .ig-profile-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(600px 280px at 15% 15%, rgba(216,177,91,.14), transparent 60%);
+      pointer-events: none;
+    }
+    .ig-profile-top {
+      display: flex; align-items: center; gap: 16px; margin-bottom: 20px;
+      position: relative;
+    }
+    .ig-avatar {
+      width: 64px; height: 64px; border-radius: 50%;
+      border: 2px solid rgba(216,177,91,.30);
+      box-shadow: 0 0 0 4px rgba(216,177,91,.10);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .ig-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .ig-avatar-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, rgba(216,177,91,.25), rgba(216,177,91,.10));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 800; color: rgba(241,208,138,.9);
+    }
+    .ig-profile-name { font-size: 18px; font-weight: 700; letter-spacing: -.01em; }
+    .ig-profile-handle { font-size: 13px; color: rgba(255,255,255,.55); margin-top: 3px; letter-spacing: .02em; }
+    .ig-stats { display: flex; gap: 20px; padding: 16px 0; border-top: 1px solid rgba(255,255,255,.08); border-bottom: 1px solid rgba(255,255,255,.08); margin-bottom: 18px; position: relative; }
+    .ig-stat { text-align: center; flex: 1; }
+    .ig-stat-val { font-size: 18px; font-weight: 700; letter-spacing: -.02em; }
+    .ig-stat-label { font-size: 11px; color: var(--muted2); text-transform: uppercase; letter-spacing: .08em; margin-top: 3px; }
+    .ig-bio { font-size: 13px; color: rgba(255,255,255,.68); line-height: 1.65; margin-bottom: 20px; position: relative; }
+    .ig-cta-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(216,177,91,.26);
+      background: linear-gradient(180deg, rgba(216,177,91,.20), rgba(216,177,91,.10));
+      color: rgba(255,255,255,.92);
+      font-size: 14px; font-weight: 700;
+      cursor: pointer; text-decoration: none;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+      font-family: inherit;
+      position: relative;
+      box-shadow: 0 12px 40px rgba(216,177,91,.12);
+      letter-spacing: .02em;
+    }
+    .ig-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 18px 55px rgba(216,177,91,.18); background: linear-gradient(180deg, rgba(216,177,91,.28), rgba(216,177,91,.14)); }
+    .ig-cta-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    .ig-right { }
+    .ig-posts-preview {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .ig-thumb {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      background: linear-gradient(160deg, rgba(216,177,91,.14), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.08);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      position: relative; overflow: hidden;
+      transition: transform .25s ease, border-color .25s ease;
+    }
+    .ig-thumb:hover { transform: scale(1.04); border-color: rgba(216,177,91,.26); }
+    .ig-thumb-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,.0);
+      display: flex; align-items: center; justify-content: center;
+      transition: background .25s ease;
+    }
+    .ig-thumb:hover .ig-thumb-overlay { background: rgba(0,0,0,.30); }
+    .ig-thumb-overlay svg { opacity: 0; transition: opacity .25s ease; width: 22px; height: 22px; fill: none; stroke: rgba(255,255,255,.90); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .ig-thumb:hover .ig-thumb-overlay svg { opacity: 1; }
+    .ig-thumb-label {
+      position: absolute; bottom: 6px; left: 6px;
+      padding: 3px 7px; border-radius: 6px;
+      background: rgba(0,0,0,.40);
+      font-size: 8px; letter-spacing: .1em; text-transform: uppercase;
+      color: rgba(255,255,255,.75);
+    }
+    .ig-wave {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg,
+        rgba(216,177,91,.18) 0%,
+        rgba(216,177,91,.06) 40%,
+        rgba(255,255,255,.06) 70%,
+        rgba(216,177,91,.10) 100%
+      );
+    }
+
+    /* Animate waves for visual variety */
+    .ig-thumb:nth-child(1) .ig-wave { background: linear-gradient(135deg, rgba(216,177,91,.22) 0%, rgba(200,140,60,.10) 60%, rgba(100,80,40,.05) 100%); }
+    .ig-thumb:nth-child(2) .ig-wave { background: linear-gradient(135deg, rgba(255,255,255,.08) 0%, rgba(216,177,91,.12) 50%, rgba(150,120,60,.08) 100%); }
+    .ig-thumb:nth-child(3) .ig-wave { background: linear-gradient(160deg, rgba(216,177,91,.16) 0%, rgba(120,100,50,.08) 60%, rgba(255,255,255,.04) 100%); }
+    .ig-thumb:nth-child(4) .ig-wave { background: linear-gradient(120deg, rgba(255,255,255,.06) 0%, rgba(216,177,91,.14) 55%, rgba(200,160,80,.08) 100%); }
+    .ig-thumb:nth-child(5) .ig-wave { background: linear-gradient(140deg, rgba(216,177,91,.20) 0%, rgba(160,130,60,.09) 55%, rgba(255,255,255,.04) 100%); }
+    .ig-thumb:nth-child(6) .ig-wave { background: linear-gradient(150deg, rgba(255,255,255,.07) 0%, rgba(216,177,91,.13) 50%, rgba(180,140,70,.08) 100%); }
+
+    /* ── PROCESS / RESULTS SECTION ── */
+    .results-section { padding: 80px 0; }
+    .results-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 40px;
+    }
+    .result-card {
+      border-radius: 20px; padding: 24px;
+      border: 1px solid rgba(255,255,255,.09);
+      background: linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      position: relative; overflow: hidden;
+      transition: transform .3s ease, border-color .3s ease;
+    }
+    .result-card:hover { transform: translateY(-4px); border-color: rgba(216,177,91,.20); }
+    .result-card::after {
+      content: ''; position: absolute; inset: -1px;
+      background: radial-gradient(500px 200px at 10% 10%, rgba(216,177,91,.10), transparent 55%);
+      opacity: 0; transition: opacity .3s ease; pointer-events: none;
+      border-radius: inherit;
+    }
+    .result-card:hover::after { opacity: 1; }
+    .result-num {
+      font-size: 44px; font-weight: 800; letter-spacing: -0.04em;
+      background: linear-gradient(90deg, var(--gold2), var(--gold));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      margin-bottom: 6px;
+    }
+    .result-label { font-size: 16px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 8px; }
+    .result-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    /* ── CTA SECTION ── */
+    .cta-section { padding: 80px 0 100px; }
+    .cta-box {
+      border-radius: 28px; padding: 50px;
+      border: 1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(800px 300px at 20% 20%, rgba(216,177,91,.18), transparent 60%),
+        radial-gradient(600px 300px at 90% 60%, rgba(255,255,255,.05), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow: 0 40px 100px rgba(0,0,0,.65);
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-box::after {
+      content: ''; position: absolute; inset: -2px;
+      background: linear-gradient(90deg, rgba(216,177,91,.15), transparent 40%, rgba(216,177,91,.10));
+      opacity: .5; pointer-events: none; mix-blend-mode: screen;
+    }
+    .cta-box-inner { position: relative; }
+    .cta-title {
+      font-size: clamp(28px, 3.5vw, 46px);
+      font-weight: 800; letter-spacing: -0.03em; line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .cta-sub { font-size: 15px; color: var(--muted); line-height: 1.8; max-width: 58ch; margin: 0 auto 32px; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 24px 0 32px;
+      border-top: 1px solid rgba(255,255,255,.07);
+      background: rgba(0,0,0,.14);
+      color: rgba(255,255,255,.52);
+      font-size: 13px;
+      position: relative; z-index: 1;
+    }
+    .footer-inner {
+      width: min(var(--max), calc(100% - 44px));
+      margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(30px); }
+    .reveal.in { opacity: 1; transform: none; transition: opacity .7s ease, transform .7s ease; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .client-hero-inner { grid-template-columns: 1fr; gap: 50px; }
+      .mockup-area { min-height: 380px; }
+      .phone-secondary { display: none; }
+      .ig-preview-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .results-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .client-hero { padding: 100px 0 60px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .cta-box { padding: 32px 22px; }
+      .stats-row { gap: 10px; }
+      .phone-main { width: 200px; }
+      .ig-posts-preview { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1 !important; transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-layer" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header id="siteHeader">
+    <div class="header-inner">
+      <a href="index.html" class="back-btn" aria-label="Back to Profylift">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 5l-7 7 7 7"/></svg>
+        Back
+      </a>
+      <div class="header-brand">
+        <img src="logo.png" alt="Profylift" onerror="this.style.display='none'">
+        Profylift
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ── HERO ── -->
+    <section class="client-hero">
+      <div class="container">
+        <div class="client-hero-inner">
+
+          <!-- LEFT: Client Info -->
+          <div class="client-info" id="clientInfoLeft">
+            <div class="client-badge">
+              <span class="dot" aria-hidden="true"></span>
+              <span id="clientCategory">Instagram Growth</span>
+            </div>
+            <div class="client-logo-display">
+              <img id="clientLogoImg" src="" alt="Client logo">
+            </div>
+            <h1 class="client-name">
+              <span class="accent" id="clientNameAccent"></span>
+            </h1>
+            <p class="client-category" id="clientNiche"></p>
+            <p class="client-desc" id="clientDesc"></p>
+            <div class="client-actions">
+              <a class="btn btn-gold" id="clientIgLink" href="#" target="_blank" rel="noopener">
+                <span class="btn-dot" aria-hidden="true"></span>
+                View on Instagram
+                <svg viewBox="0 0 24 24"><path d="M7 17L17 7"/><path d="M10 7h7v7"/></svg>
+              </a>
+              <a href="index.html#contact" class="btn">
+                Work with Us
+                <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+              </a>
+            </div>
+            <div class="stats-row" id="statsRow">
+              <!-- populated by JS -->
+            </div>
+          </div>
+
+          <!-- RIGHT: Phone Mockup -->
+          <div class="mockup-area" id="mockupArea">
+            <div class="mockup-glow" aria-hidden="true"></div>
+
+            <!-- Secondary (background) phone -->
+            <div class="phone-secondary" aria-hidden="true">
+              <div class="phone-secondary-notch"></div>
+              <div class="phone-secondary-screen">
+                <div class="ig-post" style="margin-bottom:4px;">
+                  <div class="ig-post-img ig-post-img-2">
+                    <div class="reel-label">REEL</div>
+                    <div class="play-icon"><svg viewBox="0 0 24 24"><path d="M9 7l10 5-10 5V7z"/></svg></div>
+                  </div>
+                </div>
+                <div class="ig-post">
+                  <div class="ig-post-img">
+                    <div class="reel-label">POST</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Main phone -->
+            <div class="phone-main" role="img" aria-label="Instagram preview mockup">
+              <div class="phone-notch" aria-hidden="true"></div>
+              <div class="phone-screen">
+                <!-- Post 1: Reel -->
+                <div class="ig-post">
+                  <div class="ig-post-header">
+                    <div class="ig-post-avatar" id="mockupAvatar">P</div>
+                    <div>
+                      <div class="ig-post-username" id="mockupHandle">@profylift</div>
+                    </div>
+                  </div>
+                  <div class="ig-post-img">
+                    <div class="reel-label">REEL</div>
+                    <div class="play-icon"><svg viewBox="0 0 24 24"><path d="M9 7l10 5-10 5V7z"/></svg></div>
+                  </div>
+                  <div class="ig-post-footer">
+                    <div class="ig-post-icons">
+                      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                      <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    </div>
+                    <div class="ig-post-likes" id="mockupLikes">2,841 likes</div>
+                  </div>
+                </div>
+
+                <!-- Post 2 -->
+                <div class="ig-post">
+                  <div class="ig-post-header">
+                    <div class="ig-post-avatar" id="mockupAvatar2">P</div>
+                    <div><div class="ig-post-username" id="mockupHandle2">@profylift</div></div>
+                  </div>
+                  <div class="ig-post-img ig-post-img-2">
+                    <div class="reel-label">POST</div>
+                  </div>
+                  <div class="ig-post-footer">
+                    <div class="ig-post-icons">
+                      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    </div>
+                    <div class="ig-post-likes" id="mockupLikes2">1,204 likes</div>
+                  </div>
+                </div>
+              </div>
+              <div class="phone-home" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider" aria-hidden="true"></div>
+
+    <!-- ── FEATURES ── -->
+    <section class="features-section">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-label">What We Delivered</div>
+          <h2 class="section-title">Our Work With This Client</h2>
+          <p class="section-subtitle" id="featuresSubtitle">A full-service Instagram growth engagement focused on content, strategy, and brand clarity.</p>
+        </div>
+        <div class="features-grid reveal" id="featuresGrid">
+          <!-- populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider" aria-hidden="true"></div>
+
+    <!-- ── INSTAGRAM PROFILE PREVIEW ── -->
+    <section class="instagram-section">
+      <div class="container">
+        <div class="ig-preview-grid">
+          <div class="ig-left reveal">
+            <div class="section-label">Instagram Profile</div>
+            <h2 class="section-title" style="margin-bottom:24px">Visit Their Page</h2>
+            <div class="ig-profile-card">
+              <div class="ig-profile-top">
+                <div class="ig-avatar">
+                  <img id="igAvatarImg" src="" alt="Client avatar">
+                  <div class="ig-avatar-placeholder" id="igAvatarPlaceholder" style="display:none">A</div>
+                </div>
+                <div>
+                  <div class="ig-profile-name" id="igProfileName">Client Name</div>
+                  <div class="ig-profile-handle" id="igProfileHandle">@handle</div>
+                </div>
+              </div>
+              <div class="ig-stats">
+                <div class="ig-stat"><div class="ig-stat-val" id="igStatPosts">—</div><div class="ig-stat-label">Posts</div></div>
+                <div class="ig-stat"><div class="ig-stat-val" id="igStatFollowers">—</div><div class="ig-stat-label">Followers</div></div>
+                <div class="ig-stat"><div class="ig-stat-val" id="igStatEng">—</div><div class="ig-stat-label">Avg. Reach</div></div>
+              </div>
+              <p class="ig-bio" id="igBio">Managed by Profylift — premium Instagram growth agency.</p>
+              <a class="ig-cta-btn" id="igCtaBtn" href="#" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="6" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
+                Open Instagram Profile
+                <svg viewBox="0 0 24 24"><path d="M7 17L17 7"/><path d="M10 7h7v7"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="ig-right reveal">
+            <div class="section-label" style="margin-bottom:16px;">Content Preview</div>
+            <div class="ig-posts-preview" id="igPostsGrid">
+              <div class="ig-thumb"><div class="ig-wave"></div><div class="ig-thumb-label">Reel</div><div class="ig-thumb-overlay"><svg viewBox="0 0 24 24"><path d="M9 7l10 5-10 5V7z" fill="rgba(255,255,255,.9)"/></svg></div></div>
+              <div class="ig-thumb"><div class="ig-wave"></div><div class="ig-thumb-label">Post</div><div class="ig-thumb-overlay"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12l3 3 5-6"/></svg></div></div>
+              <div class="ig-thumb"><div class="ig-wave"></div><div class="ig-thumb-label">Reel</div><div class="ig-thumb-overlay"><svg viewBox="0 0 24 24"><path d="M9 7l10 5-10 5V7z" fill="rgba(255,255,255,.9)"/></svg></div></div>
+              <div class="ig-thumb"><div class="ig-wave"></div><div class="ig-thumb-label">Post</div><div class="ig-thumb-overlay"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12l3 3 5-6"/></svg></div></div>
+              <div class="ig-thumb"><div class="ig-wave"></div><div class="ig-thumb-label">Reel</div><div class="ig-thumb-overlay"><svg viewBox="0 0 24 24"><path d="M9 7l10 5-10 5V7z" fill="rgba(255,255,255,.9)"/></svg></div></div>
+              <div class="ig-thumb"><div class="ig-wave"></div><div class="ig-thumb-label">Story</div><div class="ig-thumb-overlay"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div></div>
+            </div>
+            <p style="margin-top:14px;font-size:13px;color:rgba(255,255,255,.45);text-align:center;letter-spacing:.02em;">Tap any post to visit the full profile →</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider" aria-hidden="true"></div>
+
+    <!-- ── RESULTS ── -->
+    <section class="results-section">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-label">Impact</div>
+          <h2 class="section-title">Results That Speak</h2>
+          <p class="section-subtitle">Every client engagement is built for measurable growth — not vanity metrics.</p>
+        </div>
+        <div class="results-grid reveal" id="resultsGrid">
+          <!-- populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CTA ── -->
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-box reveal">
+          <div class="cta-box-inner">
+            <h2 class="cta-title">Want results like these?</h2>
+            <p class="cta-sub">Profylift helps premium brands grow on Instagram with strategy that converts. Let's build something great together.</p>
+            <div class="cta-btns">
+              <a class="btn btn-gold" href="https://wa.me/917010079036" target="_blank" rel="noopener">
+                <span class="btn-dot" aria-hidden="true"></span>
+                WhatsApp Us
+                <svg viewBox="0 0 24 24"><path d="M7 17L17 7"/><path d="M10 7h7v7"/></svg>
+              </a>
+              <a class="btn" href="index.html#contact">Contact Form</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div>© <span id="year"></span> Profylift. All rights reserved.</div>
+      <div>Luxury Instagram Growth Agency</div>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    "use strict";
+
+    /* ── CLIENT DATA ── */
+    const CLIENTS = {
+      albeck: {
+        name: "Albeck",
+        category: "Restaurant & Dining",
+        niche: "Luxury Restaurant · Premium Food Content",
+        desc: "Albeck Restaurant needed a stronger Instagram presence to match their premium dining experience. Profylift built a content system around high-quality food reels, behind-the-scenes storytelling, and a refined visual brand — turning their page into a destination for food lovers.",
+        logo: "albeck.png",
+        logoFallback: "A",
+        igHandle: "@albeck_restaurant",
+        igLink: "https://instagram.com/albeck_restaurant",
+        igBio: "🍽️ Premium dining experience. Managed by @profylift — luxury content strategy & reels.",
+        stats: [
+          { val: "3×", label: "Reach Growth" },
+          { val: "85%", label: "Retention Rate" },
+          { val: "12+", label: "Reels/Month" }
+        ],
+        igStats: { posts: "48", followers: "6.2K", eng: "18K" },
+        mockupLikes: ["3,241 likes", "1,820 likes"],
+        features: [
+          { icon: '<path d="M12 3v18"/><path d="M3 12h18"/>', title: "Profile Setup & Optimization", desc: "Complete Instagram profile redesign — bio, highlights, link-in-bio, and brand tone alignment." },
+          { icon: '<path d="M15 10l4.55-2.27A1 1 0 0 1 21 8.62v6.76a1 1 0 0 1-1.45.89L15 14M3 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>', title: "Reels Production", desc: "High-retention food reels with luxury hooks, captions, and cinematic pacing." },
+          { icon: '<path d="M4 6h16M4 12h16M4 18h16"/>', title: "Content Strategy", desc: "Monthly content calendar with repeatable formats, posting cadence, and audience growth focus." }
+        ],
+        results: [
+          { num: "3×", label: "Reach Multiplied", desc: "Organic reach grew significantly within the first 60 days of content consistency." },
+          { num: "↑85%", label: "Reel Retention", desc: "Average viewers watch through most of the reel — a key signal for the algorithm." },
+          { num: "12+", label: "Reels Per Month", desc: "A sustainable publishing cadence that keeps the page visible and growing." },
+          { num: "100%", label: "Brand Aligned", desc: "Every post reflects the restaurant's luxury positioning — no off-brand content." }
+        ]
+      },
+      halal: {
+        name: "Halal Living",
+        category: "Lifestyle & Food",
+        niche: "Halal Lifestyle · Chennai-Based Community Page",
+        desc: "The Halal Living is a Chennai-based lifestyle brand celebrating halal food, culture, and community. Profylift created a vibrant content system of reels, local spotlights, and engaging storytelling — growing their community and positioning them as Chennai's go-to halal guide.",
+        logo: "halal.png",
+        logoFallback: "H",
+        igHandle: "@the.halal.living",
+        igLink: "https://instagram.com/the.halal.living",
+        igBio: "🌙 Chennai's halal lifestyle guide. Content by @profylift — strategy, reels & growth.",
+        stats: [
+          { val: "5K+", label: "Followers Grown" },
+          { val: "90%", label: "Local Reach" },
+          { val: "20+", label: "Posts/Month" }
+        ],
+        igStats: { posts: "62", followers: "8.1K", eng: "22K" },
+        mockupLikes: ["4,120 likes", "2,390 likes"],
+        features: [
+          { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>', title: "Community Growth", desc: "Targeted engagement strategies to grow a genuine local halal-focused audience in Chennai." },
+          { icon: '<path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10"/><path d="M12 12C6 12 2 8 2 2c4 0 8 2 10 10z"/><path d="M12 12v10"/>', title: "Local SEO + Hashtags", desc: "Location-based hashtag strategy and geo-targeting to dominate local halal content search." },
+          { icon: '<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12l3 3 5-6"/>', title: "Consistent Posting", desc: "Daily stories, 5+ weekly posts, and a curated feed aesthetic that builds trust and loyalty." }
+        ],
+        results: [
+          { num: "5K+", label: "New Followers", desc: "Organic community growth with followers genuinely interested in halal lifestyle content." },
+          { num: "90%", label: "Local Audience", desc: "Hyper-local targeting ensures the right Chennai audience discovers and follows the page." },
+          { num: "2×", label: "Save Rate", desc: "Content designed to be saved and shared — a strong signal for algorithmic growth." },
+          { num: "20+", label: "Posts Monthly", desc: "A volume-driven strategy with consistent quality that fuels ongoing reach growth." }
+        ]
+      },
+      sportz: {
+        name: "Sportz Connect",
+        category: "Sports & Community",
+        niche: "Sports Platform · Youth & Amateur Sports",
+        desc: "Sportz Connect is a sports community platform connecting players, teams, and enthusiasts. Profylift developed a dynamic content system featuring match highlights, player stories, and sports culture reels — building an engaged sports community and driving platform signups through Instagram.",
+        logo: "sportz.png",
+        logoFallback: "SC",
+        igHandle: "@sportzconnect",
+        igLink: "https://instagram.com/sportzconnect",
+        igBio: "⚡ Connecting the sports community. Reels & content by @profylift.",
+        stats: [
+          { val: "10K+", label: "Impressions/Mo" },
+          { val: "4×", label: "Engagement Up" },
+          { val: "8+", label: "Reels/Month" }
+        ],
+        igStats: { posts: "35", followers: "4.5K", eng: "15K" },
+        mockupLikes: ["5,840 likes", "3,120 likes"],
+        features: [
+          { icon: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>', title: "High-Energy Reels", desc: "Fast-paced sports reels with dynamic edits, sound design, and hype-building hooks." },
+          { icon: '<path d="M4 19V5M4 19h16M8 15l3-3 3 2 5-6"/><path d="M18 8h3v3"/>', title: "Growth Analytics", desc: "Monthly performance reviews with data-led decisions on content formats and timing." },
+          { icon: '<path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z"/><path d="M12 8h.01"/><path d="M11 12h1v6h1"/>', title: "Brand Storytelling", desc: "Athlete stories, behind-the-scenes, and sports culture content that builds community loyalty." }
+        ],
+        results: [
+          { num: "10K+", label: "Monthly Impressions", desc: "Strong consistent reach driven by high-retention reels and community engagement." },
+          { num: "4×", label: "Engagement Growth", desc: "Likes, comments, and shares multiplied — proof the content resonates with sports fans." },
+          { num: "↑60%", label: "Profile Visits", desc: "More discovery-driven visits translating to followers and platform signups." },
+          { num: "8+", label: "Reels Monthly", desc: "A steady cadence of sports content keeping the page top-of-mind in the algorithm." }
+        ]
+      }
+    };
+
+    /* ── READ URL PARAM ── */
+    const params = new URLSearchParams(window.location.search);
+    const clientKey = params.get('client') || 'albeck';
+    const client = CLIENTS[clientKey] || CLIENTS['albeck'];
+
+    /* ── POPULATE DATA ── */
+    document.title = client.name + ' — Profylift Client';
+    document.getElementById('clientCategory').textContent = client.category;
+    document.getElementById('clientNameAccent').textContent = client.name;
+    document.getElementById('clientNiche').textContent = client.niche;
+    document.getElementById('clientDesc').textContent = client.desc;
+
+    // Logo
+    const logoImg = document.getElementById('clientLogoImg');
+    logoImg.src = client.logo;
+    logoImg.alt = client.name + ' logo';
+    logoImg.onerror = function() {
+      this.style.display = 'none';
+      this.parentElement.innerHTML = '<div class="logo-placeholder">' + client.logoFallback + '</div>';
+    };
+
+    // Instagram link
+    document.getElementById('clientIgLink').href = client.igLink;
+
+    // Stats row
+    const statsRow = document.getElementById('statsRow');
+    statsRow.innerHTML = client.stats.map(s =>
+      `<div class="stat"><div class="stat-val">${s.val}</div><div class="stat-label">${s.label}</div></div>`
+    ).join('');
+
+    // Mockup
+    document.getElementById('mockupAvatar').textContent  = client.logoFallback.charAt(0);
+    document.getElementById('mockupAvatar2').textContent = client.logoFallback.charAt(0);
+    document.getElementById('mockupHandle').textContent  = client.igHandle;
+    document.getElementById('mockupHandle2').textContent = client.igHandle;
+    document.getElementById('mockupLikes').textContent   = client.mockupLikes[0];
+    document.getElementById('mockupLikes2').textContent  = client.mockupLikes[1];
+
+    // Features grid
+    document.getElementById('featuresGrid').innerHTML = client.features.map(f => `
+      <div class="feature-card">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(241,208,138,.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${f.icon}</svg></div>
+        <div class="feature-title">${f.title}</div>
+        <div class="feature-desc">${f.desc}</div>
+      </div>
+    `).join('');
+
+    // IG profile section
+    document.getElementById('igProfileName').textContent = client.name;
+    document.getElementById('igProfileHandle').textContent = client.igHandle;
+    document.getElementById('igBio').textContent = client.igBio;
+    document.getElementById('igCtaBtn').href = client.igLink;
+    document.getElementById('igStatPosts').textContent = client.igStats.posts;
+    document.getElementById('igStatFollowers').textContent = client.igStats.followers;
+    document.getElementById('igStatEng').textContent = client.igStats.eng;
+
+    // IG avatar
+    const igAvImg = document.getElementById('igAvatarImg');
+    const igAvPh  = document.getElementById('igAvatarPlaceholder');
+    igAvImg.src = client.logo;
+    igAvImg.alt = client.name;
+    igAvPh.textContent = client.logoFallback.charAt(0);
+    igAvImg.onerror = function() { this.style.display = 'none'; igAvPh.style.display = 'flex'; };
+
+    // IG thumbs clickable
+    document.querySelectorAll('.ig-thumb').forEach(el => {
+      el.addEventListener('click', () => window.open(client.igLink, '_blank', 'noopener'));
+      el.setAttribute('tabindex', '0');
+      el.setAttribute('role', 'button');
+      el.setAttribute('aria-label', 'Open Instagram profile');
+      el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.open(client.igLink, '_blank', 'noopener'); } });
+    });
+
+    // Results grid
+    document.getElementById('resultsGrid').innerHTML = client.results.map(r => `
+      <div class="result-card">
+        <div class="result-num">${r.num}</div>
+        <div class="result-label">${r.label}</div>
+        <div class="result-desc">${r.desc}</div>
+      </div>
+    `).join('');
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    /* ── HEADER SCROLL ── */
+    const header = document.getElementById('siteHeader');
+    window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 12); }, { passive: true });
+
+    /* ── SCROLL REVEAL ── */
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(el => { if (el.isIntersecting) { el.target.classList.add('in'); io.unobserve(el.target); } });
+    }, { threshold: 0.10 });
+    revealEls.forEach(el => io.observe(el));
+
+    /* ── GSAP ANIMATIONS ── */
+    if (typeof gsap === 'undefined') return;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Hero entrance
+    const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    heroTl
+      .from('.client-badge',       { opacity: 0, x: -30, scale: 0.92, duration: 0.7 }, 0.1)
+      .from('.client-logo-display',{ opacity: 0, scale: 0.7, y: 10, duration: 0.6, ease: 'back.out(1.4)' }, 0.25)
+      .from('.client-name',        { opacity: 0, y: 50, rotation: -2, scale: 0.94, duration: 1.0 }, 0.4)
+      .from('.client-category',    { opacity: 0, y: 25, duration: 0.7 }, 0.55)
+      .from('.client-desc',        { opacity: 0, y: 30, duration: 0.75 }, 0.65)
+      .from('.client-actions',     { opacity: 0, y: 20, duration: 0.65 }, 0.78)
+      .from('.stats-row .stat',    { opacity: 0, y: 20, scale: 0.93, duration: 0.6, stagger: 0.1 }, 0.88)
+      .from('.phone-main',         { opacity: 0, x: 80, rotation: 5, scale: 0.88, duration: 1.0, ease: 'power2.out' }, 0.35)
+      .from('.phone-secondary',    { opacity: 0, x: 50, rotation: 10, scale: 0.80, duration: 0.9, ease: 'power2.out' }, 0.55)
+      .from('.mockup-glow',        { opacity: 0, scale: 0.6, duration: 1.2, ease: 'power2.out' }, 0.2);
+
+    // Feature cards
+    gsap.fromTo('.feature-card', { opacity: 0, y: 40, scale: 0.95 }, {
+      opacity: 1, y: 0, scale: 1, duration: 0.75, ease: 'power3.out', stagger: 0.12,
+      scrollTrigger: { trigger: '.features-grid', start: 'top 85%', toggleActions: 'play none none none' }
+    });
+
+    // Result cards
+    gsap.fromTo('.result-card', { opacity: 0, y: 35, scale: 0.95 }, {
+      opacity: 1, y: 0, scale: 1, duration: 0.75, ease: 'power3.out', stagger: 0.1,
+      scrollTrigger: { trigger: '.results-grid', start: 'top 85%', toggleActions: 'play none none none' }
+    });
+
+    // IG thumbs
+    gsap.fromTo('.ig-thumb', { opacity: 0, scale: 0.85 }, {
+      opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.2)', stagger: 0.07,
+      scrollTrigger: { trigger: '.ig-posts-preview', start: 'top 88%', toggleActions: 'play none none none' }
+    });
+
+    // CTA
+    gsap.fromTo('.cta-box', { opacity: 0, y: 50, scale: 0.95 }, {
+      opacity: 1, y: 0, scale: 1, duration: 1.0, ease: 'power3.out',
+      scrollTrigger: { trigger: '.cta-box', start: 'top 88%', toggleActions: 'play none none none' }
+    });
+
+    // Magnetic CTA buttons
+    document.querySelectorAll('.btn-gold').forEach(btn => {
+      btn.addEventListener('mousemove', e => {
+        const rect = btn.getBoundingClientRect();
+        const dx = (e.clientX - rect.left - rect.width/2) * 0.15;
+        const dy = (e.clientY - rect.top - rect.height/2) * 0.15;
+        gsap.to(btn, { x: dx, y: dy, duration: 0.3, ease: 'power2.out' });
+      });
+      btn.addEventListener('mouseleave', () => {
+        gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
+      });
+    });
+
+  })();
+  </script>
+
+</body>
+</html>
